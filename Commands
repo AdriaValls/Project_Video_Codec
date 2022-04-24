@@ -1,0 +1,8 @@
+java -jar Tmcodec-1.0-SNAPSHOT.jar -h
+
+java -jar Tmcodec-1.0-SNAPSHOT.jar -e
+
+java -jar Tmcodec-1.0-SNAPSHOT.jar -d
+
+java -jar Tmcodec-1.0-SNAPSHOT.jar -e -i C:\Users\adriv\IdeaProjects\Tmcodec\src\main\resources\Cubo.zip
+
