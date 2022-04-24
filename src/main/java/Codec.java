@@ -30,7 +30,6 @@ public class Codec {
             System.exit(0);
         }
 
-
     }
 
     public void testVideo(Args arguments){
