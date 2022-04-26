@@ -30,9 +30,26 @@ public class Codec {
             System.exit(0);
         }
 
-
+        //try video
+        testVideo(argParser);
     }
 
+    public static void testVideo(Args arguments){
+
+        File file = null;
+        BufferedImage img = null;
+        int width, height;
+
+        //read and write JPGE files
+        //try to read an image
+        JPEG_Handler jpeg_handler = new JPEG_Handler();
+        img = jpeg_handler.readImage("C:/Users/sebas/IdeaProjects/Project_Video_Codec_NEW/src/main/resources/images/Cubo/Cubo00.png");
+
+        //display one image
+        DisplayImg displayImg = new DisplayImg(img);
+        //displayImg.setVisible(true);
+        displayImg.playVideo(arguments.getZipPath());
+    }
 
     public static void testParser(Args arguments){
 

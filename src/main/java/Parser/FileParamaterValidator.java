@@ -18,7 +18,7 @@ public class FileParamaterValidator implements IParameterValidator {
             String message = (value + " does not exist");
             throw  new ParameterException(message);
         }
-        if(!Files.isRegularFile(pathToZipDir, LinkOption.NOFOLLOW_LINKS)){
+        if(!Files.isRegularFile(pathToZipDir, LinkOption.NOFOLLOW_LINKS) && !Files.isDirectory(pathToZipDir, LinkOption.NOFOLLOW_LINKS)){
             String message = (value + " Is not a file");
             throw  new ParameterException(message);
         }
