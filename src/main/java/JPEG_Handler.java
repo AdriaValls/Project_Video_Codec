@@ -15,7 +15,7 @@ public class JPEG_Handler {
             File file = new File(str);
             BufferedImage img = ImageIO.read(file);
 
-            System.out.println("Image reading: correct");
+            //System.out.println("Image reading: correct");
 
             return img;
         }catch (IOException error){
@@ -28,7 +28,7 @@ public class JPEG_Handler {
         try{
             File file = new File("C:/Users/sebas/IdeaProjects/Project_Video_Codec/src/Out_images/outCubo00.png");
             ImageIO.write(img, "png",file);
-            System.out.println("Image writing: correct");
+            //System.out.println("Image writing: correct");
 
         }catch (IOException error){
             System.out.println("Error writing image: " + error);
