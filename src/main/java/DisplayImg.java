@@ -24,13 +24,13 @@ public class DisplayImg extends JFrame{
         JPanel panel = new JPanel();
         this.getContentPane().add(panel); //put panel on the window
         //add components
-        /*
+
         JLabel image = new JLabel(new ImageIcon(img)); //make the image a swing component, so we can add it to the panel
-        changeColor(img);
+        //changeColor(img);
         add(image);
         remove(image);
         //changeColor(img); //it doesn't matter if we change it before or after we add the image
-         */
+
 
     }
 

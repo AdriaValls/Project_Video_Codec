@@ -11,17 +11,17 @@ public class JPEG_Handler {
     }
 
     public BufferedImage readImage(String str ){
+        BufferedImage img = null;
         try{
             File file = new File(str);
-            BufferedImage img = ImageIO.read(file);
+            img = ImageIO.read(file);
 
             //System.out.println("Image reading: correct");
 
-            return img;
         }catch (IOException error){
             System.out.println("Error reading image: " + error);
         }
-        return null;
+        return img;
     }
 
     public void writeImage(BufferedImage img){

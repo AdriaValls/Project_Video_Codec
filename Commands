@@ -6,5 +6,11 @@ java -jar Tmcodec-1.0-SNAPSHOT.jar -d
 
 java -jar Tmcodec-1.0-SNAPSHOT.jar -e -i C:\Users\adriv\IdeaProjects\Tmcodec\src\main\resources\Cubo.zip
 
+//try video
 java -jar Tmcodec-1.0-SNAPSHOT.jar -e -i C:\Users\sebas\IdeaProjects\Project_Video_Codec_NEW\src\main\resources\images\Cubo --fps 24
 
+//unzip file
+java -jar Tmcodec-1.0-SNAPSHOT.jar -e -i C:\Users\sebas\IdeaProjects\Project_Video_Codec_NEW\src\main\resources\images\Cubo.zip -o C:\Users\sebas\IdeaProjects\Project_Video_Codec_NEW\src\main\resources\Out_images\Cubo
+
+//zip file
+java -jar Tmcodec-1.0-SNAPSHOT.jar -e -i C:\Users\sebas\IdeaProjects\Project_Video_Codec_NEW\src\main\resources\Out_images\Cubo -o C:\Users\sebas\IdeaProjects\Project_Video_Codec_NEW\src\main\resources\Out_images\Cubo.zip

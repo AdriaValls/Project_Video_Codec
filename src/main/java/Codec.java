@@ -29,25 +29,46 @@ public class Codec {
             jCommander.usage();
             System.exit(0);
         }
+        //try to unzip folder
+        //test_Unzip_file(argParser);
+
+        //try to zip folder
+        //test_Zip_file(argParser);
 
         //try video
         testVideo(argParser);
     }
+    public static void test_Unzip_file(Args arguments){
+
+        //read ZIP files
+        ZipHandler zipHandler = new ZipHandler();
+        //pass input path and output path
+        zipHandler.readZip(arguments.getZipPath(), arguments.getOutputName());
+
+    }
+    public static void test_Zip_file(Args arguments){
+
+        //write ZIP files
+        ZipHandler zipHandler = new ZipHandler();
+        //pass input path and output path
+        zipHandler.writeZip(arguments.getZipPath(), arguments.getOutputName());
+
+    }
 
     public static void testVideo(Args arguments){
 
-        File file = null;
         BufferedImage img = null;
-        int width, height;
+        File inputFile = new File(arguments.getZipPath());
+        File[] file_allPaths = inputFile.listFiles();
 
         //read and write JPGE files
         //try to read an image
         JPEG_Handler jpeg_handler = new JPEG_Handler();
-        img = jpeg_handler.readImage("C:/Users/sebas/IdeaProjects/Project_Video_Codec_NEW/src/main/resources/images/Cubo/Cubo00.png");
+        img = jpeg_handler.readImage(file_allPaths[0].getAbsolutePath());
 
         //display one image
         DisplayImg displayImg = new DisplayImg(img);
-        //displayImg.setVisible(true);
+        displayImg.setVisible(true);
         displayImg.playVideo(arguments.getZipPath(), arguments.getFps());
     }
 
