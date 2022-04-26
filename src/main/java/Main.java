@@ -1,3 +1,4 @@
+/*
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -38,5 +39,7 @@ public class Main {
         zipHandler.writeZip("C:/Users/sebas/IdeaProjects/Project_Video_Codec/src/Out_images/Cubo", "C:/Users/sebas/IdeaProjects/Project_Video_Codec/src/Out_images/Cubo.zip");
 
          */
+        /*
     }
 }
+*/

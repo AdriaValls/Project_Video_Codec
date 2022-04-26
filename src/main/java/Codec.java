@@ -30,9 +30,11 @@ public class Codec {
             System.exit(0);
         }
 
+        //try video
+        testVideo(argParser);
     }
 
-    public void testVideo(Args arguments){
+    public static void testVideo(Args arguments){
 
         File file = null;
         BufferedImage img = null;
