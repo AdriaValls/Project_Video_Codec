@@ -48,7 +48,7 @@ public class Codec {
         //display one image
         DisplayImg displayImg = new DisplayImg(img);
         //displayImg.setVisible(true);
-        displayImg.playVideo(arguments.getZipPath());
+        displayImg.playVideo(arguments.getZipPath(), arguments.getFps());
     }
 
     public static void testParser(Args arguments){

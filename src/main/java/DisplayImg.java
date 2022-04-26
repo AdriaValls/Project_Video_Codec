@@ -14,7 +14,7 @@ public class DisplayImg extends JFrame{
         setTitle("Project Window");
         setLocationRelativeTo(null); //set it to the center
 
-        System.out.println("creating panel...");
+        //System.out.println("creating panel...");
         createPanel(img);
         //setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -35,7 +35,7 @@ public class DisplayImg extends JFrame{
     }
 
     public void changeColor(BufferedImage img){
-        System.out.println("Changing color...");
+        //System.out.println("Changing color...");
         for (int i = 0; i < img.getWidth(); i++) {
             for (int j = 0; j < img.getHeight(); j++) {
                 int rgb = img.getRGB(i,j);
@@ -49,10 +49,12 @@ public class DisplayImg extends JFrame{
 
     }
 
-    public void playVideo(String inPath){
+    public void playVideo(String inPath, int fps){
         JPEG_Handler jpeg_handler = new JPEG_Handler();
         File inputFile = new File(inPath);
         File[] file_allPaths = inputFile.listFiles();
+        String progressBar = new String(new char[file_allPaths.length]).replace('\0', '_');
+        int count = 0;
 
         if (file_allPaths.length == 0){
             throw new IllegalArgumentException("This file is empty " + inputFile.getAbsolutePath());
@@ -61,7 +63,7 @@ public class DisplayImg extends JFrame{
         for (File frame : file_allPaths) {
 
             BufferedImage img = jpeg_handler.readImage(frame.getAbsolutePath());
-            System.out.println(frame.getAbsolutePath()); //print for debugging
+            //System.out.println(frame.getAbsolutePath()); //print for debugging
             JLabel image = new JLabel(new ImageIcon(img));
             //add and remove the images, making the illusion of updating the panel
             add(image);
@@ -69,15 +71,18 @@ public class DisplayImg extends JFrame{
             setVisible(true);
             remove(image);
 
+            progressBar = progressBar.substring(0, count) + "=" + progressBar.substring(count+1,progressBar.length());
             //to control the frame rate, anything with more than one 0 is probably too slow
-            FrameRateControl frameRate = new FrameRateControl(10); //in milliseconds
+            FrameRateControl frameRate = new FrameRateControl(1/fps); //in milliseconds
             frameRate.start();
             try {
                 frameRate.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            System.out.print(progressBar + "\r");
             //imageUpdate(image);
+            count++;
 
         }
 
