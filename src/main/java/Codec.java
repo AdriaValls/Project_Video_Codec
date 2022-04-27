@@ -67,7 +67,7 @@ public class Codec {
         img = jpeg_handler.readImage(file_allPaths[0].getAbsolutePath());
 
         //display one image
-        DisplayImg displayImg = new DisplayImg(img);
+        DisplayImg displayImg = new DisplayImg(img, arguments.getFilter());
         displayImg.setVisible(true);
         displayImg.playVideo(arguments.getZipPath(), arguments.getFps());
     }
@@ -88,8 +88,6 @@ public class Codec {
         System.out.print("seekRange: " + arguments.getSeekRange()+"\n");
         System.out.print("GOP: " + arguments.getGOP()+"\n");
         System.out.print("Quality: " + arguments.getQuality()+"\n");
-
-
 
         File file;
         BufferedImage img = null;

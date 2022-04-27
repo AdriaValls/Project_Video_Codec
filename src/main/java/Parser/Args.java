@@ -39,6 +39,8 @@ public class Args {
     private boolean batch;
 
     //TODO: filter parameters
+    @Parameter(names = { "--filter", "-f" },help = true, description ="Filter for the images" )
+    private String filter = "null";
 
     @Parameter(names = { "--help", "-h" },help = true, description = "Display help information")
     private boolean help;
@@ -65,5 +67,6 @@ public class Args {
     public int getGOP(){return GOP;}
     public int getQuality(){return quality;}
 
+    public String getFilter(){return filter;}
 
 }
