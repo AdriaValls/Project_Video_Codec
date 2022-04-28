@@ -30,10 +30,13 @@ public class Codec {
             System.exit(0);
         }
         //try to unzip folder
-        //test_Unzip_file(argParser);
-
+        if(argParser.isDecode()){
+            test_Unzip_file(argParser);
+        }
         //try to zip folder
-        //test_Zip_file(argParser);
+        if(argParser.isEncode()){
+            test_Zip_file(argParser);
+        }
 
         //try video
         testVideo(argParser);
@@ -58,7 +61,17 @@ public class Codec {
     public static void testVideo(Args arguments){
 
         BufferedImage img = null;
-        File inputFile = new File(arguments.getZipPath());
+        File inputFile = null;
+        if(arguments.isDecode()){
+            inputFile = new File(arguments.getOutputName()); //use output path
+
+        }else if(arguments.isEncode()){ //try to zip folder
+
+            inputFile = new File(arguments.getZipPath()); //use input path
+        }else{
+            inputFile = new File(arguments.getZipPath()); //else use input path
+        }
+
         File[] file_allPaths = inputFile.listFiles();
 
         //read and write JPGE files
@@ -69,7 +82,7 @@ public class Codec {
         //display one image
         DisplayImg displayImg = new DisplayImg(img, arguments.getFilter());
         displayImg.setVisible(true);
-        displayImg.playVideo(arguments.getZipPath(), arguments.getFps());
+        displayImg.playVideo(inputFile.getAbsolutePath(), arguments.getFps());
     }
 
     public static void testParser(Args arguments){

@@ -10,10 +10,10 @@ java -jar Tmcodec-1.0-SNAPSHOT.jar -e -i C:\Users\adriv\IdeaProjects\Tmcodec\src
 java -jar Tmcodec-1.0-SNAPSHOT.jar -e -i C:\Users\adriv\IdeaProjects\Project_Video_Codec\src\main\resources\Out_images\Cubo --fps 24
 
 //try video
-java -jar Tmcodec-1.0-SNAPSHOT.jar -e -i C:\Users\sebas\IdeaProjects\Project_Video_Codec_NEW\src\main\resources\images\Cubo --fps 24
+java -jar Tmcodec-1.0-SNAPSHOT.jar -i C:\Users\sebas\IdeaProjects\Project_Video_Codec_NEW\src\main\resources\images\Cubo --fps 24 -f average
 
 //unzip file
-java -jar Tmcodec-1.0-SNAPSHOT.jar -e -i C:\Users\sebas\IdeaProjects\Project_Video_Codec_NEW\src\main\resources\images\Cubo.zip -o C:\Users\sebas\IdeaProjects\Project_Video_Codec_NEW\src\main\resources\Out_images\Cubo
+java -jar Tmcodec-1.0-SNAPSHOT.jar -i C:\Users\sebas\IdeaProjects\Project_Video_Codec_NEW\src\main\resources\images\Cubo.zip -o C:\Users\sebas\IdeaProjects\Project_Video_Codec_NEW\src\main\resources\Out_images\Cubo -f average -d
 
 //zip file
-java -jar Tmcodec-1.0-SNAPSHOT.jar -e -i C:\Users\sebas\IdeaProjects\Project_Video_Codec_NEW\src\main\resources\Out_images\Cubo -o C:\Users\sebas\IdeaProjects\Project_Video_Codec_NEW\src\main\resources\Out_images\Cubo.zip
+java -jar Tmcodec-1.0-SNAPSHOT.jar -i C:\Users\sebas\IdeaProjects\Project_Video_Codec_NEW\src\main\resources\Out_images\Cubo -o C:\Users\sebas\IdeaProjects\Project_Video_Codec_NEW\src\main\resources\Out_images\Cubo.zip -f average -e
