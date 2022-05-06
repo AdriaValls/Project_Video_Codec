@@ -96,4 +96,37 @@ public class ZipHandler {
         }
 
     }
+
+    //create a copy file with JPEG images
+    public void copy_file_as_jpeg(String inPath, String outPath){
+
+        File outDirectoryFolder = new File(outPath);
+
+        if(!outDirectoryFolder.exists()){
+            outDirectoryFolder.mkdir();
+        }
+
+        File inputFile = new File(inPath);
+        File[] file_allPaths = inputFile.listFiles();
+        if (file_allPaths.length == 0){
+            throw new IllegalArgumentException("This file is empty " + inputFile.getAbsolutePath());
+        }
+
+        for (File temp : file_allPaths) { //for each loop
+            if(!temp.isDirectory()){
+                JPEG_Handler jpeg_handler = new JPEG_Handler();
+                jpeg_handler.writeImage(jpeg_handler.png_to_jpeg(jpeg_handler.readImage(temp.getAbsolutePath())),
+                        outPath + File.separator + temp.getName().substring(0,temp.getName().length()-4) + ".jpeg");
+
+
+            }else{
+                File dir = new File(temp.getName());
+                dir.mkdir();
+
+            }
+        }
+        System.out.println("Creating Folder with JPEG: correct");
+
+
+    }
 }

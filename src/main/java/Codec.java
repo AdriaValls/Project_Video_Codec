@@ -47,6 +47,8 @@ public class Codec {
         ZipHandler zipHandler = new ZipHandler();
         //pass input path and output path
         zipHandler.readZip(arguments.getZipPath(), arguments.getOutputName());
+        //TODO-Maybe create an if arg for this
+        zipHandler.copy_file_as_jpeg(arguments.getOutputName(), arguments.getOutputName() +"JPEG_Copy");
 
     }
     public static void test_Zip_file(Args arguments){

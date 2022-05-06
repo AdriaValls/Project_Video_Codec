@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -24,14 +25,21 @@ public class JPEG_Handler {
         return img;
     }
 
-    public void writeImage(BufferedImage img){
+    public void writeImage(BufferedImage img, String outPath){
         try{
-            File file = new File("C:/Users/sebas/IdeaProjects/Project_Video_Codec/src/Out_images/outCubo00.png");
-            ImageIO.write(img, "png",file);
+            File file = new File(outPath);
+            ImageIO.write(img, "jpeg",file);
             //System.out.println("Image writing: correct");
 
         }catch (IOException error){
             System.out.println("Error writing image: " + error);
         }
+    }
+
+    public BufferedImage png_to_jpeg(BufferedImage imgIN ){
+        BufferedImage Jpeg_Image = null;
+        Jpeg_Image = new BufferedImage( imgIN.getWidth(), imgIN.getHeight(), BufferedImage.TYPE_INT_RGB);
+        Jpeg_Image.createGraphics().drawImage( imgIN, 0, 0, Color.BLACK, null);
+        return Jpeg_Image;
     }
 }
