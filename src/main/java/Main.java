@@ -17,12 +17,12 @@ public class Main {
 
         //read and write JPGE files
         //try to read an image
-        JPEG_Handler jpeg_handler = new JPEG_Handler();
+        FileManagement.JPEG_Handler jpeg_handler = new FileManagement.JPEG_Handler();
         img = jpeg_handler.readImage("C:/Users/sebas/IdeaProjects/Project_Video_Codec/src/images/Cubo/Cubo00.png");
 
 
         //display one image
-        DisplayImg displayImg = new DisplayImg(img);
+        Display.DisplayImg displayImg = new Display.DisplayImg(img);
         //displayImg.setVisible(true);
         displayImg.playVideo("C:/Users/sebas/IdeaProjects/Project_Video_Codec/src/images/Cubo");
 
@@ -33,7 +33,7 @@ public class Main {
         jpeg_handler.writeImage(img);
 
         //read and write ZIP files
-        ZipHandler zipHandler = new ZipHandler();
+        FileManagement.ZipHandler zipHandler = new FileManagement.ZipHandler();
         //pass input path and output path
         zipHandler.readZip("C:/Users/sebas/IdeaProjects/Project_Video_Codec/src/images/Cubo.zip","C:/Users/sebas/IdeaProjects/Project_Video_Codec/src/Out_images/Cubo");
         zipHandler.writeZip("C:/Users/sebas/IdeaProjects/Project_Video_Codec/src/Out_images/Cubo", "C:/Users/sebas/IdeaProjects/Project_Video_Codec/src/Out_images/Cubo.zip");

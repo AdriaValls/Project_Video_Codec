@@ -1,3 +1,7 @@
+package Display;
+
+import FileManagement.JPEG_Handler;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.color.ColorSpace;

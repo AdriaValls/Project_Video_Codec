@@ -1,3 +1,5 @@
+package FileManagement;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;

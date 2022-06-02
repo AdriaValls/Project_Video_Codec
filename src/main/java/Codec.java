@@ -1,3 +1,6 @@
+import Display.DisplayImg;
+import FileManagement.JPEG_Handler;
+import FileManagement.ZipHandler;
 import Parser.Args;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
