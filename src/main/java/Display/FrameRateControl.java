@@ -1,3 +1,5 @@
+package Display;
+
 public class FrameRateControl extends Thread{
     /*
     This is supposed to be used as a frame rate control, to control the speed.

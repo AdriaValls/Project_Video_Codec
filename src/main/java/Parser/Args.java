@@ -45,6 +45,7 @@ public class Args {
     @Parameter(names = { "--help", "-h" },help = true, description = "Display help information")
     private boolean help;
 
+
     public boolean isHelp(){
         return help;
     }
