@@ -1,8 +1,8 @@
 package FileManagement;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,35 +10,41 @@ import java.util.List;
 
 //Each
 public class MatchWriter {
-    List<Integer> x;
-    List<Integer> y;
-    String filePath;
+    List<Integer> xList;
+    List<Integer> yList;
+    File matchFile;
 
 
     //TODO: for decoder, initialize match list from the file
-    public MatchWriter(String matchFilePath)  {
-        x = new ArrayList<>();
-        y = new ArrayList<>();
-        filePath = matchFilePath;
-
+    public MatchWriter(File file)  {
+        xList = new ArrayList<>();
+        yList = new ArrayList<>();
+        matchFile = file;
     }
 
     public void addMatch(int xCoord, int yCoord){
-        x.add(xCoord);
-        y.add(yCoord);
+        xList.add(xCoord);
+        yList.add(yCoord);
     }
 
     public void saveToDir(){
+
         try {
-            FileWriter myWriter = new FileWriter(filePath);
-            myWriter.write(x.size());
-            for(int i=0; i<=x.size(); i++){
-                myWriter.write(x.get(i));
-                myWriter.write(y.get(i));
+
+            FileOutputStream fos = new FileOutputStream(matchFile, true);
+            String outputString = "";
+            outputString += xList.size();
+
+            for(int i=0; i<xList.size(); i++){
+
+                outputString += (xList.get(i).toString());
+                System.out.println("x = "+xList.get(i));
+                outputString += (yList.get(i).toString());
+                System.out.println("y = "+yList.get(i));
             }
-
-            myWriter.close();
-
+            byte[] b= outputString.getBytes();
+            fos.write(b);
+            fos.close();
 
         } catch (IOException e) {
             System.out.println("An error occurred.");
