@@ -12,14 +12,13 @@ import java.util.List;
 public class MatchWriter {
     List<Integer> xList;
     List<Integer> yList;
-    File matchFile;
+
 
 
     //TODO: for decoder, initialize match list from the file
-    public MatchWriter(File file)  {
+    public MatchWriter()  {
         xList = new ArrayList<>();
         yList = new ArrayList<>();
-        matchFile = file;
     }
 
     public void addMatch(int xCoord, int yCoord){
@@ -27,8 +26,8 @@ public class MatchWriter {
         yList.add(yCoord);
     }
 
-    public void saveToDir(){
-
+    public void saveToFile(File file){
+        File matchFile = file;
         try {
 
             FileOutputStream fos = new FileOutputStream(matchFile, true);

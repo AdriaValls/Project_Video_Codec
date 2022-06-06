@@ -15,10 +15,10 @@ public class MatchWriterTest {
             fileCreated = matchFile.createNewFile();
             if(fileCreated){
                 System.out.print("file Created");
-                MatchWriter match = new MatchWriter(matchFile);
+                MatchWriter match = new MatchWriter();
                 match.addMatch(1,1);
                 match.addMatch(4,5);
-                match.saveToDir();
+                match.saveToFile(matchFile);
             }else{
                 System.out.print("file Created");
             }
