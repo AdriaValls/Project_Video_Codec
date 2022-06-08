@@ -122,7 +122,7 @@ public class DisplayImg extends JFrame{
 
             System.out.print(progressBar + "\r");
             //imageUpdate(image);
-            System.out.println(count);
+            //System.out.println(count);
             //count++;
         }
 

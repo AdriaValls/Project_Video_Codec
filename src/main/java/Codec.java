@@ -12,14 +12,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Codec implements Runnable{
-    private static Args main_args;
+public class Codec {
+    //private static Args main_args;
 
     public static void main(String[] args) {
         System.out.print("TM codec"+"\n");
 
         Args argParser = new Args();
-        main_args = argParser; //copy the arguments so we can use them in the runnable.
+        //main_args = argParser; //copy the arguments so we can use them in the runnable.
 
         JCommander jCommander = new JCommander(argParser);
         jCommander.setProgramName("TMCodec");
@@ -46,6 +46,8 @@ public class Codec implements Runnable{
 
         //try video
         //testVideo(argParser);
+        callRunnable(argParser);
+
     }
     public static void test_Unzip_file(Args arguments){
 
@@ -98,6 +100,37 @@ public class Codec implements Runnable{
         sc.main(null);
     }
     */
+    public static void callRunnable(Args arguments){ //start Display, adn start Thread for Scheduler
+
+        System.out.println("fps: " + arguments.getFps());
+
+        BufferedImage img = null;
+        File inputFile = null;
+        if(arguments.isDecode()){
+            inputFile = new File(arguments.getOutputName()); //use output path
+
+        }else if(arguments.isEncode()){ //try to zip folder
+
+            inputFile = new File(arguments.getZipPath()); //use input path
+        }else{
+            inputFile = new File(arguments.getZipPath()); //else use input path
+        }
+
+        File[] file_allPaths = inputFile.listFiles();
+
+        //read and write JPGE files
+        //try to read an image
+        JPEG_Handler jpeg_handler = new JPEG_Handler();
+        img = jpeg_handler.readImage(file_allPaths[0].getAbsolutePath());
+
+        //display one image, to start the window
+        DisplayImg displayImg = new DisplayImg(img, arguments.getFilter());
+        displayImg.setVisible(true);
+
+        ScheduledVideoCaller svc = new ScheduledVideoCaller(displayImg, arguments.getFps(), inputFile.getAbsolutePath());
+        Thread thread1 = new Thread(svc);
+        thread1.start();
+    }
 
     public static void testParser(Args arguments){
 
@@ -130,10 +163,10 @@ public class Codec implements Runnable{
             System.out.println("Error reading image: " + error);
         }
     }
-
+/*
     @Override
     public void run() { //runnable
-        //System.out.println("fps: " + main_fps);
+        System.out.println("fps: " + main_args.getFps());
 
         BufferedImage img = null;
         File inputFile = null;
@@ -160,4 +193,5 @@ public class Codec implements Runnable{
 
         new ScheduledVideoCaller(displayImg, main_args.getFps(), inputFile.getAbsolutePath());
     }
+ */
 }
