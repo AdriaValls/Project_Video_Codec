@@ -53,6 +53,7 @@ public class DisplayImg extends JFrame{
     }
 
     public void playVideo(String inPath, int fps){
+        //this function was used before, when we didn't have the Scheduler. Now its not in use
         JPEG_Handler jpeg_handler = new JPEG_Handler();
         File inputFile = new File(inPath);
         File[] file_allPaths = inputFile.listFiles();
@@ -93,7 +94,10 @@ public class DisplayImg extends JFrame{
 
     }
 
-    public void playVideo2(String inPath, int count){ //TODO- this one uses scheduler
+    public void playVideo2(String inPath, int count){
+        //Now using the Scheduler, as we call the task ScheduledPlayVideo, count is initialized and updated,
+        //and it is used to control up until when the Panel is updated
+
         JPEG_Handler jpeg_handler = new JPEG_Handler();
         File inputFile = new File(inPath);
         File[] file_allPaths = inputFile.listFiles();
@@ -117,13 +121,10 @@ public class DisplayImg extends JFrame{
             add(image);
             setVisible(true);
             remove(image);
-
             progressBar = progressBar.substring(0, count) + "=" + progressBar.substring(count+1,progressBar.length());
 
             System.out.print(progressBar + "\r");
             //imageUpdate(image);
-            //System.out.println(count);
-            //count++;
         }
 
     }

@@ -21,9 +21,8 @@ public class ScheduledPlayVideo extends TimerTask {
 
     @Override
     public void run() {
-        //here we want to de what we did in PlayVideo2
-        //Somewhere else, like DisplayImg, we should run the caller, where we do
-        //timer.scheduleAtFixedRate(), and call this function several times.
+        //Since this is called by the scheduler, we can call the playVideo2 functions, which updates the
+        //video image by adding and removing images to the Panel in DisplayImg
         displayImg.playVideo2(this.my_inPath, this.count);
         count++;
     }

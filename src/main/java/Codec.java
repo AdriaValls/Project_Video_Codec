@@ -45,7 +45,6 @@ public class Codec {
         }
 
         //try video
-        //testVideo(argParser);
         callRunnable(argParser);
 
     }
@@ -67,39 +66,6 @@ public class Codec {
         zipHandler.writeZip(arguments.getZipPath(), arguments.getOutputName());
 
     }
-    /*
-    public static void testVideo(Args arguments){
-
-        BufferedImage img = null;
-        File inputFile = null;
-        if(arguments.isDecode()){
-            inputFile = new File(arguments.getOutputName()); //use output path
-
-        }else if(arguments.isEncode()){ //try to zip folder
-
-            inputFile = new File(arguments.getZipPath()); //use input path
-        }else{
-            inputFile = new File(arguments.getZipPath()); //else use input path
-        }
-
-        File[] file_allPaths = inputFile.listFiles();
-
-        //read and write JPGE files
-        //try to read an image
-        JPEG_Handler jpeg_handler = new JPEG_Handler();
-        img = jpeg_handler.readImage(file_allPaths[0].getAbsolutePath());
-
-        //display one image
-        //DisplayImg displayImg = new DisplayImg(img, arguments.getFilter());
-        //displayImg.setVisible(true);
-        //displayImg.playVideo(inputFile.getAbsolutePath(), arguments.getFps());
-
-
-        //the new idea is to call diplayimg from the ScheduledCall class, and call the video from there
-        ScheduledCall sc = new ScheduledCall(inputFile.getAbsolutePath(), arguments.getFps(),img, arguments.getFilter());
-        sc.main(null);
-    }
-    */
     public static void callRunnable(Args arguments){ //start Display, adn start Thread for Scheduler
 
         System.out.println("fps: " + arguments.getFps());
@@ -127,6 +93,7 @@ public class Codec {
         DisplayImg displayImg = new DisplayImg(img, arguments.getFilter());
         displayImg.setVisible(true);
 
+        //make first call to start the Scheduler, to control the frame rate on a separate Thread
         ScheduledVideoCaller svc = new ScheduledVideoCaller(displayImg, arguments.getFps(), inputFile.getAbsolutePath());
         Thread thread1 = new Thread(svc);
         thread1.start();
@@ -163,35 +130,5 @@ public class Codec {
             System.out.println("Error reading image: " + error);
         }
     }
-/*
-    @Override
-    public void run() { //runnable
-        System.out.println("fps: " + main_args.getFps());
 
-        BufferedImage img = null;
-        File inputFile = null;
-        if(main_args.isDecode()){
-            inputFile = new File(main_args.getOutputName()); //use output path
-
-        }else if(main_args.isEncode()){ //try to zip folder
-
-            inputFile = new File(main_args.getZipPath()); //use input path
-        }else{
-            inputFile = new File(main_args.getZipPath()); //else use input path
-        }
-
-        File[] file_allPaths = inputFile.listFiles();
-
-        //read and write JPGE files
-        //try to read an image
-        JPEG_Handler jpeg_handler = new JPEG_Handler();
-        img = jpeg_handler.readImage(file_allPaths[0].getAbsolutePath());
-
-        //display one image, to start the window
-        DisplayImg displayImg = new DisplayImg(img, main_args.getFilter());
-        displayImg.setVisible(true);
-
-        new ScheduledVideoCaller(displayImg, main_args.getFps(), inputFile.getAbsolutePath());
-    }
- */
 }
