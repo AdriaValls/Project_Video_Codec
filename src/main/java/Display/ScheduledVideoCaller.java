@@ -21,7 +21,7 @@ public class ScheduledVideoCaller implements Runnable{
         Timer timer = new Timer();
         ScheduledPlayVideo spv = new ScheduledPlayVideo(my_displayImg, my_inputPath);
         //use scheduler to update the pictures according to the fps
-        timer.scheduleAtFixedRate(spv,0,1000/my_fps); //TODO-hangle fps format
+        timer.scheduleAtFixedRate(spv,0,(long)((double)1000/my_fps));
     }
 }
 
