@@ -10,6 +10,7 @@ import java.awt.image.ColorConvertOp;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 import java.io.File;
+import java.util.TimerTask;
 
 public class DisplayImg extends JFrame{
     private String filter;
@@ -52,6 +53,7 @@ public class DisplayImg extends JFrame{
     }
 
     public void playVideo(String inPath, int fps){
+        //this function was used before, when we didn't have the Scheduler. Now its not in use
         JPEG_Handler jpeg_handler = new JPEG_Handler();
         File inputFile = new File(inPath);
         File[] file_allPaths = inputFile.listFiles();
@@ -91,6 +93,42 @@ public class DisplayImg extends JFrame{
         }
 
     }
+
+    public void playVideo2(String inPath, int count){
+        //Now using the Scheduler, as we call the task ScheduledPlayVideo, count is initialized and updated,
+        //and it is used to control up until when the Panel is updated
+
+        JPEG_Handler jpeg_handler = new JPEG_Handler();
+        File inputFile = new File(inPath);
+        File[] file_allPaths = inputFile.listFiles();
+        String progressBar = new String(new char[file_allPaths.length]).replace('\0', '_');
+
+        if (file_allPaths.length == 0){
+            throw new IllegalArgumentException("This file is empty " + inputFile.getAbsolutePath());
+        }
+
+        if (count < file_allPaths.length){
+
+            File frame = file_allPaths[count];
+            BufferedImage img = jpeg_handler.readImage(frame.getAbsolutePath());
+
+            if(isFilter){
+                applyFilter(img);
+            }
+            //System.out.println(frame.getAbsolutePath()); //print for debugging
+            JLabel image = new JLabel(new ImageIcon(img));
+            //add and remove the images, making the illusion of updating the panel
+            add(image);
+            setVisible(true);
+            remove(image);
+            progressBar = progressBar.substring(0, count) + "=" + progressBar.substring(count+1,progressBar.length());
+
+            System.out.print(progressBar + "\r");
+            //imageUpdate(image);
+        }
+
+    }
+
     public void applyFilter(BufferedImage img){
         if(filter.equals("color")){
             changeColor(img);

@@ -1,4 +1,6 @@
 import Display.DisplayImg;
+import Display.ScheduledCall;
+import Display.ScheduledVideoCaller;
 import FileManagement.JPEG_Handler;
 import FileManagement.ZipHandler;
 import Parser.Args;
@@ -11,15 +13,16 @@ import java.io.File;
 import java.io.IOException;
 
 public class Codec {
+    //private static Args main_args;
 
     public static void main(String[] args) {
         System.out.print("TM codec"+"\n");
 
         Args argParser = new Args();
+        //main_args = argParser; //copy the arguments so we can use them in the runnable.
 
         JCommander jCommander = new JCommander(argParser);
         jCommander.setProgramName("TMCodec");
-
 
         try{
             jCommander.parse(args);
@@ -42,7 +45,8 @@ public class Codec {
         }
 
         //try video
-        testVideo(argParser);
+        callRunnable(argParser);
+
     }
     public static void test_Unzip_file(Args arguments){
 
@@ -62,8 +66,9 @@ public class Codec {
         zipHandler.writeZip(arguments.getZipPath(), arguments.getOutputName());
 
     }
+    public static void callRunnable(Args arguments){ //start Display, adn start Thread for Scheduler
 
-    public static void testVideo(Args arguments){
+        System.out.println("fps: " + arguments.getFps());
 
         BufferedImage img = null;
         File inputFile = null;
@@ -84,10 +89,14 @@ public class Codec {
         JPEG_Handler jpeg_handler = new JPEG_Handler();
         img = jpeg_handler.readImage(file_allPaths[0].getAbsolutePath());
 
-        //display one image
+        //display one image, to start the window
         DisplayImg displayImg = new DisplayImg(img, arguments.getFilter());
         displayImg.setVisible(true);
-        displayImg.playVideo(inputFile.getAbsolutePath(), arguments.getFps());
+
+        //make first call to start the Scheduler, to control the frame rate on a separate Thread
+        ScheduledVideoCaller svc = new ScheduledVideoCaller(displayImg, arguments.getFps(), inputFile.getAbsolutePath());
+        Thread thread1 = new Thread(svc);
+        thread1.start();
     }
 
     public static void testParser(Args arguments){
@@ -121,4 +130,5 @@ public class Codec {
             System.out.println("Error reading image: " + error);
         }
     }
+
 }
