@@ -5,6 +5,7 @@ import FileManagement.MatchWriter;
 import sun.security.krb5.internal.crypto.Des;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -113,6 +114,7 @@ public class Encoder {
 
         if (tessleComparator(tesselaBase, tesselaDes, quality)) {
             //TODO aplicar average a la tessela
+            //esto se hace mas abajo?
             matchFound = true;
         }
         boolean outOfRange = false;
@@ -169,7 +171,35 @@ public class Encoder {
         //TODO: Average on subimage
         int numPixels = nTiles*nTiles;
         BufferedImage newDest = destImg;
+        //get the average color
+        int r, g, b; //we will be adding the value to calculate the average
+        r = g = b = 0;
+        int count = 0;
 
+        for (int i = 0; i < destImg.getWidth(); i++){
+            for (int j = 0; j < destImg.getHeight(); j++){
+                Color pixel = new Color(destImg.getRGB(i, j));
+
+                r = r + pixel.getRed();
+                g = g + pixel.getGreen();
+                b = b + pixel.getBlue();
+
+                count++;
+            }
+        }
+        //get average of each channel
+        r = r / count;
+        g = g / count;
+        b = b / count;
+
+        Color avgColor = new Color(r, g, b);
+        //now that we have the average color, we can apply the color to the new image
+        //TODO-check if coords are correct, what is numPixels for?
+        for (int x = 0; x < newDest.getWidth(); x++){
+            for (int y = 0; y < newDest.getHeight(); y++){
+                newDest.setRGB(x, y, avgColor.getRGB());
+            }
+        }
         return newDest;
     }
 
