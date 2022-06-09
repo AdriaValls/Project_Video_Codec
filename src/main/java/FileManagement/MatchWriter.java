@@ -21,6 +21,11 @@ public class MatchWriter {
         xList = new ArrayList<>();
         yList = new ArrayList<>();
     }
+    public void clearData(){
+        cellList = new ArrayList<>();
+        xList = new ArrayList<>();
+        yList = new ArrayList<>();
+    }
 
     public void addMatch(int cellNumber, int xCoord, int yCoord){
         cellList.add(cellNumber);
