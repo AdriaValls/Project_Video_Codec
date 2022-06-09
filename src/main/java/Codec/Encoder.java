@@ -13,23 +13,24 @@ import java.security.PublicKey;
 
 public class Encoder {
 
-    public Encoder(){}
+    public Encoder() {
+    }
 
-    public void encode(String inPath, String outPath, int nTiles, int seekRange, int GOP, int quality){
+    public void encode(String inPath, String outPath, int nTiles, int seekRange, int GOP, int quality) {
 
         JPEG_Handler jpeg_handler = new JPEG_Handler();
         File inputFile = new File(inPath);
         File[] file_allPaths = inputFile.listFiles();
-        if (file_allPaths.length == 0){
+        if (file_allPaths.length == 0) {
             throw new IllegalArgumentException("This file is empty " + inputFile.getAbsolutePath());
         }
         //Create matchFile and Save num of frames
         String fileName = "\\MatchFile.txt";
-        File matchFile = new File(outPath+fileName);
+        File matchFile = new File(outPath + fileName);
         boolean fileCreated;
-        try{
+        try {
             fileCreated = matchFile.createNewFile();
-            if(fileCreated){
+            if (fileCreated) {
                 System.out.print("Match file Created");
                 FileOutputStream fos = new FileOutputStream(matchFile, true);
                 fos.write(file_allPaths.length);
@@ -55,10 +56,10 @@ public class Encoder {
 
         MatchWriter matches = new MatchWriter();
 
-        while (destNum+1 <= file_allPaths.length){
+        while (destNum + 1 <= file_allPaths.length) {
             destNum += 1;
 
-            if(GOPcount == GOP){
+            if (GOPcount == GOP) {
                 GOPcount = 0;
                 baseNum = destNum;
                 //IMG BASE = NEXT IMAGE
@@ -71,7 +72,7 @@ public class Encoder {
                 matches.saveToFile(matchFile);
 
 
-            }else{
+            } else {
                 GOPcount += 1;
                 //IMG Dest = NEXT IMAGE
                 baseImgFile = file_allPaths[baseNum];
@@ -85,53 +86,91 @@ public class Encoder {
 
     }
 
-    public BufferedImage matchFinder(BufferedImage baseImg, BufferedImage destImg, int nTiles, int seekRange, int quality, MatchWriter matches){
+    public BufferedImage matchFinder(BufferedImage baseImg, BufferedImage destImg, int nTiles, int seekRange, int quality, MatchWriter matches) {
         BufferedImage newDest = destImg;
-        for(int x = 0; x < destImg.getWidth(); x +=nTiles){
-            for(int y= 0; y <destImg.getHeight(); y +=nTiles) {
+        for (int x = 0; x < destImg.getWidth(); x += nTiles) {
+            for (int y = 0; y < destImg.getHeight(); y += nTiles) {
                 newDest = cellMatching(baseImg, destImg, x, y, nTiles, seekRange, quality, matches);
             }
         }
         return newDest;
     }
 
-    public BufferedImage cellMatching(BufferedImage baseImg, BufferedImage destImg,int Xcoord, int Ycoord, int nTiles, int seekRange, int quality, MatchWriter matches){
+    public BufferedImage cellMatching(BufferedImage baseImg, BufferedImage destImg, int Xcoord, int Ycoord, int nTiles, int seekRange, int quality, MatchWriter matches) {
         boolean matchFound = false;
         BufferedImage newDest = destImg;
 
-        int x = Xcoord;
-        int y = Ycoord;
-        int w = Xcoord+nTiles;
-        int h = Ycoord+nTiles;
+        int centerX = Xcoord;
+        int centerY = Ycoord;
+        int w = Xcoord + nTiles;
+        int h = Ycoord + nTiles;
 
         //Subdivision Tessela
-        BufferedImage tesselaDes = destImg.getSubimage(x,y,w,h);
+        BufferedImage tesselaDes = destImg.getSubimage(centerX, centerY, w, h);
+        BufferedImage tesselaBase = baseImg.getSubimage(centerX, centerY, w, h);
 
-        while(!matchFound){
-            //algoritmo de busqueda
-            for(int range=0; range<=seekRange;range++){
-                BufferedImage tesselaBase = baseImg.getSubimage(x,y,w,h);
-                //TODO Search Algorithm
+        int range = 1;
 
-                //comparar las dos subimagenes
-                if(tessleComparator(tesselaBase,tesselaDes,quality)){
-                    //TODO aplicar average a la tessela
+        if (tessleComparator(tesselaBase, tesselaDes, quality)) {
+            //TODO aplicar average a la tessela
+            matchFound = true;
+        }
+        boolean outOfRange = false;
+
+        while (!matchFound || !outOfRange) {
+
+            //TODO Search Algorithm
+            int x = centerX-range;
+            int y = centerX-range;
+            int width = range*2+1;
+            int height = range*2+1;
+
+            for(int wit=0; wit<width;wit++){
+                x = x+wit;
+                w = x+nTiles;
+                if(x>=0 && x<destImg.getWidth() && w>=0 && w<destImg.getWidth()){
+                    for(int hit=0; hit<height;hit++){
+                        y = y+hit;
+                        h = y+nTiles;
+                        if(y>=0 && y<destImg.getHeight() && h>=0 && h<destImg.getHeight()){
+                            //generar subimagen
+                            tesselaBase = baseImg.getSubimage(x, y, w, h);
+                            //comparar las dos subimagenes
+                            if (tessleComparator(tesselaBase, tesselaDes, quality)) {
+                                matchFound = true;
+                                break;
+                            }
+                        }
+                    }
+
+                }
+                if(matchFound){
                     break;
                 }
-
-
             }
-            matchFound = true;
+            if (range == seekRange) {
+                outOfRange = true;
+            }
+            range++;
+        }
+        if(matchFound){
+           applyAverage(newDest, Xcoord, Ycoord, nTiles);
         }
         return newDest;
     }
 
     public boolean tessleComparator(BufferedImage baseTessle, BufferedImage destTessle, int quality){
         boolean isMatch =false;
-
         //TODO: Compare subimages
-
         return isMatch;
+    }
+
+    public BufferedImage applyAverage(BufferedImage destImg, int xCoord, int yCoord, int nTiles){
+        //TODO: Average on subimage
+        int numPixels = nTiles*nTiles;
+        BufferedImage newDest = destImg;
+
+        return newDest;
     }
 
 
