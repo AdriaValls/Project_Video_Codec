@@ -203,8 +203,8 @@ public class Encoder {
 
         for (int i = 0; i < destImg.getWidth(); i++){
             for (int j = 0; j < destImg.getHeight(); j++){
-                Color pixel = new Color(destImg.getRGB(i, j));
 
+                Color pixel = new Color(destImg.getRGB(i, j));
                 r = r + pixel.getRed();
                 g = g + pixel.getGreen();
                 b = b + pixel.getBlue();
