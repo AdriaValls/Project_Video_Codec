@@ -12,6 +12,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import Codec.Encoder;
+
 public class Codec {
     //private static Args main_args;
 
@@ -35,13 +37,14 @@ public class Codec {
             jCommander.usage();
             System.exit(0);
         }
-        //try to unzip folder
+        //Decode images of a file
         if(argParser.isDecode()){
-            test_Unzip_file(argParser);
+            test_Unzip_file(argParser); //for testing
         }
-        //try to zip folder
+        //Encode images of a file
         if(argParser.isEncode()){
-            test_Zip_file(argParser);
+            encode(argParser);
+            //test_Zip_file(argParser); //for testing
         }
 
         //try video
@@ -66,7 +69,28 @@ public class Codec {
         zipHandler.writeZip(arguments.getZipPath(), arguments.getOutputName());
 
     }
-    public static void callRunnable(Args arguments){ //start Display, adn start Thread for Scheduler
+    public static void encode(Args arguments){
+        long startTime = System.currentTimeMillis(); //to keep track of the execution time
+
+        //read ZIP files
+        ZipHandler zipHandler = new ZipHandler();
+        //pass the input path and output path
+        zipHandler.readZip(arguments.getZipPath(), arguments.getOutputName());
+        //once the Zip has been unzipped, we will now apply the encoding process
+        Encoder encoder = new Encoder();
+        encoder.encode(arguments.getOutputName(),arguments.getOutputName()+"_Encoded",
+                arguments.getnTiles(), arguments.getSeekRange(), arguments.getGOP(), arguments.getQuality());
+
+        //now that we have saved our encoded images as jpeg in another file, we can now zip it.
+        zipHandler.writeZip(arguments.getOutputName()+"_Encoded", arguments.getOutputName()+"_Finished");
+
+        long encodingtime = System.currentTimeMillis() - startTime;
+
+        System.out.println("Files encoded!");
+        System.out.println("Encoding time: " + encodingtime);
+    }
+
+    public static void callRunnable(Args arguments){ //start Display, and start Thread for Scheduler
 
         System.out.println("fps: " + arguments.getFps());
 
