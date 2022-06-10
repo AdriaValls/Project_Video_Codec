@@ -19,3 +19,9 @@ java -jar Tmcodec-1.0-SNAPSHOT.jar -i C:\Users\sebas\IdeaProjects\Project_Video_
 
 //zip file
 java -jar Tmcodec-1.0-SNAPSHOT.jar -i C:\Users\sebas\IdeaProjects\Project_Video_Codec_NEW\src\main\resources\Out_images\Cubo -o C:\Users\sebas\IdeaProjects\Project_Video_Codec_NEW\src\main\resources\Out_images\Cubo.zip -f average -e
+
+
+////////// Final Comands ///////////
+java -jar Tmcodec-1.0-SNAPSHOT.jar -i C:\Users\sebas\IdeaProjects\Project_Video_Codec_NEW\src\main\resources\images\Cubo.zip -o C:\Users\sebas\IdeaProjects\Project_Video_Codec_NEW\src\main\resources\Out_images\Cubo -f average -e
+
+
