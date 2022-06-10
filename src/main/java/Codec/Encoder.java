@@ -81,6 +81,8 @@ public class Encoder {
                 //COMPARACION
                 destImg = matchFinder(baseImg, destImg, nTiles, seekRange, quality, matches);
                 jpeg_handler.writeImage(destImg, outPath);
+                matches.saveToFile(matchFile);
+                matches.clearData();
             }
 
         }
@@ -89,15 +91,17 @@ public class Encoder {
 
     public BufferedImage matchFinder(BufferedImage baseImg, BufferedImage destImg, int nTiles, int seekRange, int quality, MatchWriter matches) {
         BufferedImage newDest = destImg;
+        int cellNum = 0;
         for (int x = 0; x < destImg.getWidth(); x += nTiles) {
             for (int y = 0; y < destImg.getHeight(); y += nTiles) {
-                newDest = cellMatching(baseImg, destImg, x, y, nTiles, seekRange, quality, matches);
+                newDest = cellMatching(baseImg, destImg, x, y, nTiles, seekRange, quality, matches, cellNum);
+                cellNum++;
             }
         }
         return newDest;
     }
 
-    public BufferedImage cellMatching(BufferedImage baseImg, BufferedImage destImg, int Xcoord, int Ycoord, int nTiles, int seekRange, int quality, MatchWriter matches) {
+    public BufferedImage cellMatching(BufferedImage baseImg, BufferedImage destImg, int Xcoord, int Ycoord, int nTiles, int seekRange, int quality, MatchWriter matches, int cellNum) {
         boolean matchFound = false;
         BufferedImage newDest = destImg;
 
@@ -113,17 +117,15 @@ public class Encoder {
         int range = 1;
 
         if (tessleComparator(tesselaBase, tesselaDes, quality)) {
-            //TODO aplicar average a la tessela
-            //esto se hace mas abajo?
             matchFound = true;
         }
         boolean outOfRange = false;
-
+        int x = Xcoord;
+        int y = Ycoord;
         while (!matchFound || !outOfRange) {
 
-            //TODO Search Algorithm
-            int x = centerX-range;
-            int y = centerX-range;
+            x = centerX-range;
+            y = centerX-range;
             int width = range*2+1;
             int height = range*2+1;
 
@@ -157,19 +159,42 @@ public class Encoder {
         }
         if(matchFound){
            applyAverage(newDest, Xcoord, Ycoord, nTiles);
+           matches.addMatch(cellNum,x,y);
         }
         return newDest;
     }
 
     public boolean tessleComparator(BufferedImage baseTessle, BufferedImage destTessle, int quality){
-        boolean isMatch =false;
-        //TODO: Compare subimages
+        boolean isMatch =true;
+        //get the average color
+        int r, g, b; //we will be adding the value to calculate the average
+        float diff = 0;
+        int count = 0;
+
+        for (int i = 0; i < baseTessle.getWidth(); i++){
+            for (int j = 0; j < baseTessle.getHeight(); j++){
+
+                Color destPixel = new Color(destTessle.getRGB(i, j));
+                Color basePixel = new Color(baseTessle.getRGB(i, j));
+
+                r = destPixel.getRed() - basePixel.getRed();
+                g = destPixel.getGreen() - basePixel.getGreen();
+                b = destPixel.getBlue() - basePixel.getBlue();
+                diff += Math.sqrt(r*r+b*b+g*g)/3;
+                count++;
+            }
+        }
+        float distance = diff/count;
+
+        if(distance > quality){
+            isMatch = false;
+        }
+
         return isMatch;
     }
 
     public BufferedImage applyAverage(BufferedImage destImg, int xCoord, int yCoord, int nTiles){
-        //TODO: Average on subimage
-        int numPixels = nTiles*nTiles;
+
         BufferedImage newDest = destImg;
         //get the average color
         int r, g, b; //we will be adding the value to calculate the average
