@@ -25,14 +25,14 @@ public class Args {
     private int nTiles = 8;
 
     @Parameter(names = "--seekRange",help = true, description = "Maximum sliding of tessles")
-    private int seekRange = 8;
+    private int seekRange = 4;
 
 
     @Parameter(names = "--GOP",help = true, description = "Number of images between two base images")
     private int GOP = 10;
 
     @Parameter(names = "--quality",help = true, description = "Quality factor for tessle coincidence")
-    private int quality = 2;
+    private int quality = 1;
 
 
     @Parameter(names = { "--batch", "-b" },help = true, description = "Batch mode")
