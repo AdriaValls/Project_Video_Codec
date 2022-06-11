@@ -7,7 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class MatchWriterTest {
-
+/*
     @Test
     public void fileWritingTest(){
         String filePath = "C:\\Users\\adriv\\IdeaProjects\\Project_Video_Codec\\MatchFile.txt";
@@ -37,12 +37,15 @@ public class MatchWriterTest {
             e.printStackTrace();
         }
     }
-
+*/
     @Test
     public void fileReadingTest(){
-        String filePath = "C:\\Users\\adriv\\IdeaProjects\\Project_Video_Codec\\MatchFile.txt";
+        //String filePath = "C:\\Users\\adriv\\IdeaProjects\\Project_Video_Codec\\MatchFile.txt";
+        String filePath = "C:\\Users\\sebas\\IdeaProjects\\Project_Video_Codec_NEW\\src\\main\\resources\\Out_images\\Cubo_Encoded\\MatchFile.txt";
         File matchFile = new File(filePath);
         boolean fileCreated;
+        MatchReader reader = new MatchReader(matchFile);
+        /*
         try{
             fileCreated = matchFile.createNewFile();
 
@@ -66,5 +69,9 @@ public class MatchWriterTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+         */
     }
+
+
 }

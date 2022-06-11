@@ -2,7 +2,6 @@ package Codec;
 
 import FileManagement.JPEG_Handler;
 import FileManagement.MatchWriter;
-import sun.security.krb5.internal.crypto.Des;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +21,9 @@ public class Encoder {
      * @param inPath
      */
     public void encode(String inPath, String outPath, int nTiles, int seekRange, int GOP, int quality) {
+
+        File dir = new File(outPath); //we create the directory in which we will save all the images
+        dir.mkdir();
 
         JPEG_Handler jpeg_handler = new JPEG_Handler();
         File inputFile = new File(inPath);
@@ -57,9 +59,10 @@ public class Encoder {
         //Save first Base Image
         File baseImgFile = file_allPaths[baseNum];
         baseImg = jpeg_handler.readImage(baseImgFile.getAbsolutePath());
-        jpeg_handler.writeImage(baseImg, outPath);
+        jpeg_handler.writeImage(baseImg, outPath + File.separator + "00.jpeg");
 
         MatchWriter matches = new MatchWriter();
+        matches.saveToFile(matchFile);
 
         while (destNum + 1 <= file_allPaths.length) {
             destNum += 1;
@@ -71,7 +74,7 @@ public class Encoder {
                 baseImgFile = file_allPaths[baseNum];
                 baseImg = jpeg_handler.readImage(baseImgFile.getAbsolutePath());
                 //SAVE IMAGE TAL CUAL
-                jpeg_handler.writeImage(baseImg, outPath);
+                jpeg_handler.writeImage(baseImg, outPath + File.separator + destNum + ".jpeg");
                 //SAVE MATCHES
                 matches.clearData();
                 matches.saveToFile(matchFile);
@@ -84,7 +87,7 @@ public class Encoder {
                 destImg = jpeg_handler.readImage(baseImgFile.getAbsolutePath());
                 //COMPARACION
                 destImg = matchFinder(baseImg, destImg, nTiles, seekRange, quality, matches);
-                jpeg_handler.writeImage(destImg, outPath);
+                jpeg_handler.writeImage(destImg, outPath + File.separator + destNum);
                 matches.saveToFile(matchFile);
                 matches.clearData();
             }
@@ -126,16 +129,20 @@ public class Encoder {
         boolean outOfRange = false;
         int x = Xcoord;
         int y = Ycoord;
+        int test = 0;
         while (!matchFound || !outOfRange) {
 
             x = centerX-range;
             y = centerX-range;
             int width = range*2+1;
             int height = range*2+1;
+            test++;
+            System.out.println(test);
 
             for(int wit=0; wit<width;wit++){
                 x = x+wit;
                 w = x+nTiles;
+
                 if(x>=0 && x<destImg.getWidth() && w>=0 && w<destImg.getWidth()){
                     for(int hit=0; hit<height;hit++){
                         y = y+hit;
@@ -186,6 +193,7 @@ public class Encoder {
                 b = destPixel.getBlue() - basePixel.getBlue();
                 diff += Math.sqrt(r*r+b*b+g*g)/3;
                 count++;
+
             }
         }
         float distance = diff/count;
@@ -207,8 +215,8 @@ public class Encoder {
 
         for (int i = 0; i < destImg.getWidth(); i++){
             for (int j = 0; j < destImg.getHeight(); j++){
-                Color pixel = new Color(destImg.getRGB(i, j));
 
+                Color pixel = new Color(destImg.getRGB(i, j));
                 r = r + pixel.getRed();
                 g = g + pixel.getGreen();
                 b = b + pixel.getBlue();
