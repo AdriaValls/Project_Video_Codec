@@ -2,6 +2,10 @@ package FileManagement;
 
 import java.io.*;
 
+/**
+ *
+ * @author Adrià Valls, Sebastian Andrade 2022
+ */
 public class MatchReader {
 
     public MatchReader(File matchFile){

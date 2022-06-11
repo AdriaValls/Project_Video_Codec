@@ -14,9 +14,13 @@ import java.security.PublicKey;
 
 public class Encoder {
 
+    /** Encoder Class constructor  */
     public Encoder() {
     }
 
+    /**
+     * @param inPath
+     */
     public void encode(String inPath, String outPath, int nTiles, int seekRange, int GOP, int quality) {
 
         JPEG_Handler jpeg_handler = new JPEG_Handler();

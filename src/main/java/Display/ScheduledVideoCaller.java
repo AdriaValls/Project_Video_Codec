@@ -2,6 +2,10 @@ package Display;
 
 import java.util.Timer;
 
+/**
+ *
+ * @author Adrià Valls, Sebastian Andrade 2022
+ */
 public class ScheduledVideoCaller implements Runnable{
 
     private int my_fps;
