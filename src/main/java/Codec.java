@@ -11,6 +11,9 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import Codec.Encoder;
 
@@ -89,6 +92,21 @@ public class Codec {
 
         System.out.println("Files encoded!");
         System.out.println("Encoding time: " + (double) encodingtime /1000 + "s");
+
+        //now lets print the gain in data size
+        Path old_path = Paths.get(arguments.getZipPath());
+        Path encoded_path = Paths.get(arguments.getOutputName()+"_Finished.zip");
+        try {
+
+            //size of files (in bytes)
+            long old = Files.size(old_path);
+            long encoded = Files.size(encoded_path);
+
+            System.out.println(String.format("File size improvement: "+ "%,d kilobytes", (old - encoded)/1024));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void callRunnable(Args arguments){ //start Display, and start Thread for Scheduler
