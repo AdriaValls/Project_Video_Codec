@@ -10,11 +10,29 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.PublicKey;
+import java.util.HashMap;
 
 public class Encoder {
-
+    private HashMap<Integer, Double> qualityValue;
     /** Encoder Class constructor  */
     public Encoder() {
+        /*
+        We use this table to make a proportional assesment of the Quality input given by the user.
+        Since we use the Euclidean Distance to determine the similarity, and we know how high these distances can be,
+        we created these values and assigned it to what we think corresponds to a reasonable quality value.
+         */
+        qualityValue = new HashMap<>();
+        qualityValue.put(10, 1.0);
+        qualityValue.put(9, 2.0);
+        qualityValue.put(8, 5.0);
+        qualityValue.put(7, 8.0);
+        qualityValue.put(6, 10.0);
+        qualityValue.put(5, 12.0);
+        qualityValue.put(4, 15.0);
+        qualityValue.put(3, 18.0);
+        qualityValue.put(2, 20.0);
+        qualityValue.put(1, 25.0);
+
     }
 
     /**
@@ -38,7 +56,7 @@ public class Encoder {
         try {
             fileCreated = matchFile.createNewFile();
             if (fileCreated) {
-                System.out.print("Match file Created");
+                //System.out.print("Match file Created");
                 FileOutputStream fos = new FileOutputStream(matchFile, true);
                 fos.write(file_allPaths.length);
                 fos.close();
@@ -178,13 +196,14 @@ public class Encoder {
         if(matchFound){
            applyAverage(newDest, Xcoord, Ycoord, nTiles);
            matches.addMatch(cellNum,x,y);
-           System.out.println("Match found in cell "+cellNum);
+           //System.out.println("Match found in cell "+cellNum);
 
         }
         return newDest;
     }
 
     public boolean tessleComparator(BufferedImage baseTessle, BufferedImage destTessle, int quality){
+
         boolean isMatch =true;
         //get the average color
         int r, g, b; //we will be adding the value to calculate the average
@@ -206,8 +225,8 @@ public class Encoder {
             }
         }
         float distance = diff/count;
-        System.out.println("diff: " + distance);
-        if(distance > quality){
+        //System.out.println("diff: " + distance);
+        if(distance > this.qualityValue.get(quality)){
             isMatch = false;
         }
 
