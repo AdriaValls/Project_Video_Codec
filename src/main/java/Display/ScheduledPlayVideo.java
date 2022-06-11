@@ -7,6 +7,10 @@ import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ *
+ * @author Adrià Valls, Sebastian Andrade 2022
+ */
 public class ScheduledPlayVideo extends TimerTask {
 
     int count = 0;

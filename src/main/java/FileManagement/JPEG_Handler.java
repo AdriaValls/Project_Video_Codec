@@ -6,6 +6,10 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ *
+ * @author Adrià Valls, Sebastian Andrade 2022
+ */
 public class JPEG_Handler {
 
     //constructor

@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 //Each
+/**
+ *
+ * @author Adrià Valls, Sebastian Andrade 2022
+ */
 public class MatchWriter {
     List<Integer> cellList;
     List<Integer> xList;

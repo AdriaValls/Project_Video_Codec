@@ -11,7 +11,10 @@ import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 import java.io.File;
 import java.util.TimerTask;
-
+/**
+ *
+ * @author Adrià Valls, Sebastian Andrade 2022
+ */
 public class DisplayImg extends JFrame{
     private String filter;
     private Boolean isFilter;

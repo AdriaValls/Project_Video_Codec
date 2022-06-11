@@ -8,10 +8,19 @@ import java.nio.file.LinkOption;
 import  java.nio.file.Paths;
 import  java.nio.file.Path;
 
+/**
+ *
+ * @author Adrià Valls, Sebastian Andrade 2022
+ */
 public class FileParamaterValidator implements IParameterValidator {
 
     //Name of parameter and value (path to file) checks if it exists.
+
     @Override
+    /**
+     * @param name name of the variable
+     * @param value directory or file path to be checked
+     */
     public void validate(String name, String value) throws ParameterException {
         Path pathToZipDir = Paths.get(value);
         if(!exists(pathToZipDir)){

@@ -2,6 +2,10 @@ package Display;
 import java.awt.image.BufferedImage;
 import java.util.Timer;
 
+/**
+ *
+ * @author Adrià Valls, Sebastian Andrade 2022
+ */
 public class ScheduledCall {
     int my_fps;
     String my_absolutePath;

@@ -2,6 +2,10 @@ package Parser;
 
 import com.beust.jcommander.Parameter;
 
+/**
+ *
+ * @author Adrià Valls, Sebastian Andrade 2022
+ */
 public class Args {
 
     @Parameter(names = { "-i", "--input" },required = true, validateWith = FileParamaterValidator.class, description = "Path to file.zip")
@@ -10,7 +14,6 @@ public class Args {
     @Parameter(names = { "-o", "--output" }, description = "Path to output file")
     private String outputName;
 
-    //TODO: check funcitionality of encode and decode params
     @Parameter(names = { "-e", "--encode" },help = true, description = "Encode mode")
     private boolean encode;
 
@@ -20,7 +23,6 @@ public class Args {
     @Parameter(names = "--fps",help = true, description = "Frames per second on the reproduction")
     private int fps = 24;
 
-    //TODO: Do actual tessle input
     @Parameter(names = "--nTiles",help = true, description = "Indicate if we want to apply filter to the images")
     private int nTiles = 8;
 
@@ -38,36 +40,54 @@ public class Args {
     @Parameter(names = { "--batch", "-b" },help = true, description = "Batch mode")
     private boolean batch;
 
-    //TODO: filter parameters
     @Parameter(names = { "--filter", "-f" },help = true, description ="Filter for the images" )
     private String filter = "null";
 
     @Parameter(names = { "--help", "-h" },help = true, description = "Display help information")
     private boolean help;
 
-
+    /**  @return true if the help flag is active, false otherwise*/
     public boolean isHelp(){
         return help;
     }
+
+    /** @return true if the encode flag is active, false otherwise*/
     public boolean isEncode(){
         return encode;
     }
+
+    /** @return true if the decode flag is active, false otherwise*/
     public boolean isDecode(){
         return decode;
     }
+
+    /** @return true if the batch flag is active, false otherwise*/
     public boolean isBatch(){
         return decode;
     }
 
+    /** @return path of the base zip with images*/
     public String getZipPath(){return zipPath;}
+
+    /*** @return path of the directory where we want to save the images */
     public String getOutputName(){return outputName;}
 
+    /** @return number of frames per second of the video*/
     public int getFps(){return fps;}
+
+    /*** @return size of tiles(8,16 or 32)*/
     public int getnTiles(){return nTiles;}
+
+    /** @return limit of iterations of the search algorithm*/
     public int getSeekRange(){return seekRange;}
+
+    /** @return number of images between two base frames*/
     public int getGOP(){return GOP;}
+
+    /** @return threshold for the difference of two tiles */
     public int getQuality(){return quality;}
 
+    /** @return what filer is being applied to the images*/
     public String getFilter(){return filter;}
 
 }
