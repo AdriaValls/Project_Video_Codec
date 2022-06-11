@@ -86,8 +86,9 @@ public class Encoder {
                 baseImgFile = file_allPaths[baseNum];
                 destImg = jpeg_handler.readImage(baseImgFile.getAbsolutePath());
                 //COMPARACION
+                System.out.println("Image num "+destImg);
                 destImg = matchFinder(baseImg, destImg, nTiles, seekRange, quality, matches);
-                jpeg_handler.writeImage(destImg, outPath + File.separator + destNum);
+                jpeg_handler.writeImage(destImg, outPath + File.separator + destNum + ".jpeg");
                 matches.saveToFile(matchFile);
                 matches.clearData();
             }
@@ -99,9 +100,15 @@ public class Encoder {
     public BufferedImage matchFinder(BufferedImage baseImg, BufferedImage destImg, int nTiles, int seekRange, int quality, MatchWriter matches) {
         BufferedImage newDest = destImg;
         int cellNum = 0;
-        for (int x = 0; x < destImg.getWidth(); x += nTiles) {
-            for (int y = 0; y < destImg.getHeight(); y += nTiles) {
-                newDest = cellMatching(baseImg, destImg, x, y, nTiles, seekRange, quality, matches, cellNum);
+        int xCell = 0;
+        int yCell = 0;
+
+        for (int y = 0; y*nTiles < destImg.getHeight(); y ++) {
+            yCell = y*nTiles;
+            for (int x = 0; x*nTiles < destImg.getWidth(); x ++) {
+                xCell = x*nTiles;
+                System.out.println("Cell coords: "+xCell+" "+yCell);
+                newDest = cellMatching(baseImg, newDest, xCell, yCell, nTiles, seekRange, quality, matches, cellNum);
                 cellNum++;
             }
         }
@@ -109,19 +116,22 @@ public class Encoder {
     }
 
     public BufferedImage cellMatching(BufferedImage baseImg, BufferedImage destImg, int Xcoord, int Ycoord, int nTiles, int seekRange, int quality, MatchWriter matches, int cellNum) {
+        System.out.println("Entered cell num "+cellNum);
         boolean matchFound = false;
         BufferedImage newDest = destImg;
-
+        System.out.println("nTiles: "+nTiles);
         int centerX = Xcoord;
         int centerY = Ycoord;
-        int w = Xcoord + nTiles;
-        int h = Ycoord + nTiles;
+        int w = nTiles;
+        int h = nTiles;
 
         //Subdivision Tessela
-        BufferedImage tesselaDes = destImg.getSubimage(centerX, centerY, w, h);
-        BufferedImage tesselaBase = baseImg.getSubimage(centerX, centerY, w, h);
+        BufferedImage tesselaDes = destImg.getSubimage(centerX, centerY, nTiles, nTiles);
+        BufferedImage tesselaBase = baseImg.getSubimage(centerX, centerY, nTiles, nTiles);
+        System.out.println("Dest Tesela width "+tesselaDes.getWidth());
+        System.out.println("Dest Tesela height "+tesselaDes.getHeight());
 
-        int range = 1;
+        int range = 0;
 
         if (tessleComparator(tesselaBase, tesselaDes, quality)) {
             matchFound = true;
@@ -130,27 +140,31 @@ public class Encoder {
         int x = Xcoord;
         int y = Ycoord;
         int test = 0;
-        while (!matchFound || !outOfRange) {
-
+        System.out.println("SeekRange "+seekRange);
+        while (!matchFound && !outOfRange) {
+            range++;
             x = centerX-range;
-            y = centerX-range;
+            y = centerY-range;
+            System.out.println("CenterY"+centerY);
             int width = range*2+1;
             int height = range*2+1;
-            test++;
-            System.out.println(test);
-
+            System.out.println("width"+width+"|"+"Height"+height);
             for(int wit=0; wit<width;wit++){
                 x = x+wit;
                 w = x+nTiles;
-
-                if(x>=0 && x<destImg.getWidth() && w>=0 && w<destImg.getWidth()){
-                    for(int hit=0; hit<height;hit++){
+                y = centerY-range;
+                if(x>=0 && w<destImg.getWidth()){
+                    for(int hit=0; hit<height ;hit++){
                         y = y+hit;
                         h = y+nTiles;
-                        if(y>=0 && y<destImg.getHeight() && h>=0 && h<destImg.getHeight()){
+                        if(y>=0 && h<destImg.getHeight()){
                             //generar subimagen
-                            tesselaBase = baseImg.getSubimage(x, y, w, h);
+                            //System.out.println(x+"|"+y+"|"+w+"|"+h);
+                            tesselaBase = baseImg.getSubimage(x, y, nTiles, nTiles);
                             //comparar las dos subimagenes
+                            //System.out.println("Base cell width "+tesselaBase.getWidth()+"| Base cell height "+tesselaBase.getHeight());
+                            //System.out.println("Dest cell width "+tesselaDes.getWidth()+"| Dest cell height "+tesselaDes.getHeight());
+
                             if (tessleComparator(tesselaBase, tesselaDes, quality)) {
                                 matchFound = true;
                                 break;
@@ -166,11 +180,13 @@ public class Encoder {
             if (range == seekRange) {
                 outOfRange = true;
             }
-            range++;
+
         }
         if(matchFound){
            applyAverage(newDest, Xcoord, Ycoord, nTiles);
            matches.addMatch(cellNum,x,y);
+           System.out.println("Match found in cell "+cellNum);
+
         }
         return newDest;
     }
@@ -184,7 +200,7 @@ public class Encoder {
 
         for (int i = 0; i < baseTessle.getWidth(); i++){
             for (int j = 0; j < baseTessle.getHeight(); j++){
-
+                //System.out.println("coordenada i:"+i+" j:"+j);
                 Color destPixel = new Color(destTessle.getRGB(i, j));
                 Color basePixel = new Color(baseTessle.getRGB(i, j));
 
