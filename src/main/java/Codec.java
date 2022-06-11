@@ -82,7 +82,7 @@ public class Codec {
                 arguments.getnTiles(), arguments.getSeekRange(), arguments.getGOP(), arguments.getQuality());
 
         //now that we have saved our encoded images as jpeg in another file, we can now zip it.
-        zipHandler.writeZip(arguments.getOutputName()+"_Encoded", arguments.getOutputName()+"_Finished");
+        zipHandler.writeZip(arguments.getOutputName()+"_Encoded", arguments.getOutputName()+"_Finished.zip");
 
         long encodingtime = System.currentTimeMillis() - startTime;
 
