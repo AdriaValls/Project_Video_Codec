@@ -119,7 +119,6 @@ public class Encoder {
         System.out.println("Entered cell num "+cellNum);
         boolean matchFound = false;
         BufferedImage newDest = destImg;
-        System.out.println("nTiles: "+nTiles);
         int centerX = Xcoord;
         int centerY = Ycoord;
         int w = nTiles;
@@ -128,8 +127,6 @@ public class Encoder {
         //Subdivision Tessela
         BufferedImage tesselaDes = destImg.getSubimage(centerX, centerY, nTiles, nTiles);
         BufferedImage tesselaBase = baseImg.getSubimage(centerX, centerY, nTiles, nTiles);
-        System.out.println("Dest Tesela width "+tesselaDes.getWidth());
-        System.out.println("Dest Tesela height "+tesselaDes.getHeight());
 
         int range = 0;
 
@@ -140,15 +137,12 @@ public class Encoder {
         int x = Xcoord;
         int y = Ycoord;
         int test = 0;
-        System.out.println("SeekRange "+seekRange);
         while (!matchFound && !outOfRange) {
-            range++;
+
             x = centerX-range;
             y = centerY-range;
-            System.out.println("CenterY"+centerY);
             int width = range*2+1;
             int height = range*2+1;
-            System.out.println("width"+width+"|"+"Height"+height);
             for(int wit=0; wit<width;wit++){
                 x = x+wit;
                 w = x+nTiles;
@@ -159,12 +153,8 @@ public class Encoder {
                         h = y+nTiles;
                         if(y>=0 && h<destImg.getHeight()){
                             //generar subimagen
-                            //System.out.println(x+"|"+y+"|"+w+"|"+h);
                             tesselaBase = baseImg.getSubimage(x, y, nTiles, nTiles);
                             //comparar las dos subimagenes
-                            //System.out.println("Base cell width "+tesselaBase.getWidth()+"| Base cell height "+tesselaBase.getHeight());
-                            //System.out.println("Dest cell width "+tesselaDes.getWidth()+"| Dest cell height "+tesselaDes.getHeight());
-
                             if (tessleComparator(tesselaBase, tesselaDes, quality)) {
                                 matchFound = true;
                                 break;
@@ -176,6 +166,7 @@ public class Encoder {
                 if(matchFound){
                     break;
                 }
+                range++;
             }
             if (range == seekRange) {
                 outOfRange = true;
