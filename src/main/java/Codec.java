@@ -70,6 +70,7 @@ public class Codec {
 
     }
     public static void encode(Args arguments){
+
         long startTime = System.currentTimeMillis(); //to keep track of the execution time
 
         //read ZIP files
@@ -87,7 +88,7 @@ public class Codec {
         long encodingtime = System.currentTimeMillis() - startTime;
 
         System.out.println("Files encoded!");
-        System.out.println("Encoding time: " + encodingtime);
+        System.out.println("Encoding time: " + (double) encodingtime /1000 + "s");
     }
 
     public static void callRunnable(Args arguments){ //start Display, and start Thread for Scheduler

@@ -40,12 +40,17 @@ public class Encoder {
      */
     public void encode(String inPath, String outPath, int nTiles, int seekRange, int GOP, int quality) {
 
+        System.out.println("Encoding Files :)");
+
         File dir = new File(outPath); //we create the directory in which we will save all the images
         dir.mkdir();
 
         JPEG_Handler jpeg_handler = new JPEG_Handler();
         File inputFile = new File(inPath);
         File[] file_allPaths = inputFile.listFiles();
+
+        System.out.println("Estimated time: " + (double) 0.0558 * file_allPaths.length + "s");
+
         if (file_allPaths.length == 0) {
             throw new IllegalArgumentException("This file is empty " + inputFile.getAbsolutePath());
         }
@@ -84,8 +89,13 @@ public class Encoder {
         MatchWriter matches = new MatchWriter();
         matches.saveToFile(matchFile);
 
+        String encode_progressBar = new String(new char[file_allPaths.length]).replace('\0', '_');
+
         while (destNum + 1 < file_allPaths.length) {
             destNum += 1;
+
+            encode_progressBar = encode_progressBar.substring(0, destNum) + "=" + encode_progressBar.substring(destNum+1,encode_progressBar.length());
+            System.out.print(encode_progressBar + "\r");
 
             if (GOPcount == GOP) {
                 GOPcount = 0;
