@@ -11,6 +11,9 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import Codec.Encoder;
 
@@ -70,6 +73,7 @@ public class Codec {
 
     }
     public static void encode(Args arguments){
+
         long startTime = System.currentTimeMillis(); //to keep track of the execution time
 
         //read ZIP files
@@ -82,12 +86,27 @@ public class Codec {
                 arguments.getnTiles(), arguments.getSeekRange(), arguments.getGOP(), arguments.getQuality());
 
         //now that we have saved our encoded images as jpeg in another file, we can now zip it.
-        zipHandler.writeZip(arguments.getOutputName()+"_Encoded", arguments.getOutputName()+"_Finished");
+        zipHandler.writeZip(arguments.getOutputName()+"_Encoded", arguments.getOutputName()+"_Finished.zip");
 
         long encodingtime = System.currentTimeMillis() - startTime;
 
         System.out.println("Files encoded!");
-        System.out.println("Encoding time: " + encodingtime);
+        System.out.println("Encoding time: " + (double) encodingtime /1000 + "s");
+
+        //now lets print the gain in data size
+        Path old_path = Paths.get(arguments.getZipPath());
+        Path encoded_path = Paths.get(arguments.getOutputName()+"_Finished.zip");
+        try {
+
+            //size of files (in bytes)
+            long old = Files.size(old_path);
+            long encoded = Files.size(encoded_path);
+
+            System.out.println(String.format("File size improvement: "+ "%,d kilobytes", (old - encoded)/1024));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void callRunnable(Args arguments){ //start Display, and start Thread for Scheduler

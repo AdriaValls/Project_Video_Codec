@@ -10,11 +10,29 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.PublicKey;
+import java.util.HashMap;
 
 public class Encoder {
-
+    private HashMap<Integer, Double> qualityValue;
     /** Encoder Class constructor  */
     public Encoder() {
+        /*
+        We use this table to make a proportional assesment of the Quality input given by the user.
+        Since we use the Euclidean Distance to determine the similarity, and we know how high these distances can be,
+        we created these values and assigned it to what we think corresponds to a reasonable quality value.
+         */
+        qualityValue = new HashMap<>();
+        qualityValue.put(10, 1.0);
+        qualityValue.put(9, 2.0);
+        qualityValue.put(8, 5.0);
+        qualityValue.put(7, 8.0);
+        qualityValue.put(6, 10.0);
+        qualityValue.put(5, 12.0);
+        qualityValue.put(4, 15.0);
+        qualityValue.put(3, 18.0);
+        qualityValue.put(2, 20.0);
+        qualityValue.put(1, 25.0);
+
     }
 
     /**
@@ -22,12 +40,17 @@ public class Encoder {
      */
     public void encode(String inPath, String outPath, int nTiles, int seekRange, int GOP, int quality) {
 
+        System.out.println("Encoding Files :)");
+
         File dir = new File(outPath); //we create the directory in which we will save all the images
         dir.mkdir();
 
         JPEG_Handler jpeg_handler = new JPEG_Handler();
         File inputFile = new File(inPath);
         File[] file_allPaths = inputFile.listFiles();
+
+        System.out.println("Estimated time: " + (double) 0.0558 * file_allPaths.length + "s");
+
         if (file_allPaths.length == 0) {
             throw new IllegalArgumentException("This file is empty " + inputFile.getAbsolutePath());
         }
@@ -38,7 +61,7 @@ public class Encoder {
         try {
             fileCreated = matchFile.createNewFile();
             if (fileCreated) {
-                System.out.print("Match file Created");
+                //System.out.print("Match file Created");
                 FileOutputStream fos = new FileOutputStream(matchFile, true);
                 fos.write(file_allPaths.length);
                 fos.close();
@@ -58,14 +81,21 @@ public class Encoder {
 
         //Save first Base Image
         File baseImgFile = file_allPaths[baseNum];
+        File destImgFile = file_allPaths[destNum];
+
         baseImg = jpeg_handler.readImage(baseImgFile.getAbsolutePath());
         jpeg_handler.writeImage(baseImg, outPath + File.separator + "00.jpeg");
 
         MatchWriter matches = new MatchWriter();
         matches.saveToFile(matchFile);
 
-        while (destNum + 1 <= file_allPaths.length) {
+        String encode_progressBar = new String(new char[file_allPaths.length]).replace('\0', '_');
+
+        while (destNum + 1 < file_allPaths.length) {
             destNum += 1;
+
+            encode_progressBar = encode_progressBar.substring(0, destNum) + "=" + encode_progressBar.substring(destNum+1,encode_progressBar.length());
+            System.out.print(encode_progressBar + "\r");
 
             if (GOPcount == GOP) {
                 GOPcount = 0;
@@ -83,10 +113,10 @@ public class Encoder {
             } else {
                 GOPcount += 1;
                 //IMG Dest = NEXT IMAGE
-                baseImgFile = file_allPaths[baseNum];
-                destImg = jpeg_handler.readImage(baseImgFile.getAbsolutePath());
+                destImgFile = file_allPaths[destNum];
+                destImg = jpeg_handler.readImage(destImgFile.getAbsolutePath());
                 //COMPARACION
-                System.out.println("Image num "+destImg);
+                //System.out.println("Image num "+destImg);
                 destImg = matchFinder(baseImg, destImg, nTiles, seekRange, quality, matches);
                 jpeg_handler.writeImage(destImg, outPath + File.separator + destNum + ".jpeg");
                 matches.saveToFile(matchFile);
@@ -107,7 +137,7 @@ public class Encoder {
             yCell = y*nTiles;
             for (int x = 0; x*nTiles < destImg.getWidth(); x ++) {
                 xCell = x*nTiles;
-                System.out.println("Cell coords: "+xCell+" "+yCell);
+                //System.out.println("Cell coords: "+xCell+" "+yCell);
                 newDest = cellMatching(baseImg, newDest, xCell, yCell, nTiles, seekRange, quality, matches, cellNum);
                 cellNum++;
             }
@@ -116,7 +146,7 @@ public class Encoder {
     }
 
     public BufferedImage cellMatching(BufferedImage baseImg, BufferedImage destImg, int Xcoord, int Ycoord, int nTiles, int seekRange, int quality, MatchWriter matches, int cellNum) {
-        System.out.println("Entered cell num "+cellNum);
+        //System.out.println("Entered cell num "+cellNum);
         boolean matchFound = false;
         BufferedImage newDest = destImg;
         int centerX = Xcoord;
@@ -176,13 +206,14 @@ public class Encoder {
         if(matchFound){
            applyAverage(newDest, Xcoord, Ycoord, nTiles);
            matches.addMatch(cellNum,x,y);
-           System.out.println("Match found in cell "+cellNum);
+           //System.out.println("Match found in cell "+cellNum);
 
         }
         return newDest;
     }
 
     public boolean tessleComparator(BufferedImage baseTessle, BufferedImage destTessle, int quality){
+
         boolean isMatch =true;
         //get the average color
         int r, g, b; //we will be adding the value to calculate the average
@@ -204,8 +235,8 @@ public class Encoder {
             }
         }
         float distance = diff/count;
-
-        if(distance > quality){
+        //System.out.println("diff: " + distance);
+        if(distance > this.qualityValue.get(quality)){
             isMatch = false;
         }
 
@@ -215,13 +246,14 @@ public class Encoder {
     public BufferedImage applyAverage(BufferedImage destImg, int xCoord, int yCoord, int nTiles){
 
         BufferedImage newDest = destImg;
+        //System.out.println("x: " + xCoord +"|" + "y: " + yCoord);
         //get the average color
         int r, g, b; //we will be adding the value to calculate the average
         r = g = b = 0;
         int count = 0;
 
-        for (int i = 0; i < destImg.getWidth(); i++){
-            for (int j = 0; j < destImg.getHeight(); j++){
+        for (int i = xCoord; i < xCoord + nTiles; i++){
+            for (int j = yCoord; j < yCoord + nTiles; j++){
 
                 Color pixel = new Color(destImg.getRGB(i, j));
                 r = r + pixel.getRed();
@@ -239,8 +271,8 @@ public class Encoder {
         Color avgColor = new Color(r, g, b);
         //now that we have the average color, we can apply the color to the new image
         //TODO-check if coords are correct, what is numPixels for?
-        for (int x = 0; x < newDest.getWidth(); x++){
-            for (int y = 0; y < newDest.getHeight(); y++){
+        for (int x = xCoord; x < xCoord + nTiles; x++){
+            for (int y = yCoord; y < yCoord + nTiles; y++){
                 newDest.setRGB(x, y, avgColor.getRGB());
             }
         }

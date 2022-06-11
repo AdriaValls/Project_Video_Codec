@@ -110,7 +110,7 @@ public class DisplayImg extends JFrame{
             throw new IllegalArgumentException("This file is empty " + inputFile.getAbsolutePath());
         }
 
-        if (count < file_allPaths.length){
+        if (count < file_allPaths.length ){
 
             File frame = file_allPaths[count];
             BufferedImage img = jpeg_handler.readImage(frame.getAbsolutePath());
