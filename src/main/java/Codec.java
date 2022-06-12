@@ -13,8 +13,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
 
 import Codec.Encoder;
+import Codec.Decoder;
 
 /**
  * @author Adrià Valls, Sebastian Andrade 2022
@@ -47,7 +49,8 @@ public class Codec {
         }
         //Decode images of a file
         if(argParser.isDecode()){
-            test_Unzip_file(argParser); //for testing
+            decode(argParser);
+            //test_Unzip_file(argParser); //for testing
         }
         //Encode images of a file
         if(argParser.isEncode()){
@@ -56,7 +59,7 @@ public class Codec {
         }
 
         //try video
-        callRunnable(argParser);
+        //callRunnable(argParser);
 
     }
 
@@ -90,6 +93,23 @@ public class Codec {
 
     }
 
+  
+    public static void decode(Args arguments){
+
+        long startTime = System.currentTimeMillis();
+
+        Decoder decoder = new Decoder();
+        decoder.decode(arguments.getZipPath(),arguments.getOutputName()+"_Decoded",
+                arguments.getnTiles(), arguments.getGOP());
+
+        long encodingtime = System.currentTimeMillis() - startTime;
+
+        System.out.println("Files decoded!");
+        System.out.println("Encoding time: " + (double) encodingtime /1000 + "s");
+
+
+    }
+
     /**
      * @param arguments the command line arguments which are defined in the Parser package
      * This is where the encoding process takes place. Here we call all the necessary functions to make this happen.
@@ -100,11 +120,11 @@ public class Codec {
     public static void encode(Args arguments){
 
         long startTime = System.currentTimeMillis(); //to keep track of the execution time
-
         //read ZIP files
         ZipHandler zipHandler = new ZipHandler();
         //pass the input path and output path
         zipHandler.readZip(arguments.getZipPath(), arguments.getOutputName());
+
         //once the Zip has been unzipped, we will now apply the encoding process
         Encoder encoder = new Encoder();
         encoder.encode(arguments.getOutputName(),arguments.getOutputName()+"_Encoded",

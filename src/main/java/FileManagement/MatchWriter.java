@@ -1,6 +1,7 @@
 package FileManagement;
 
 
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,20 +14,23 @@ import java.util.List;
  * @author Adrià Valls, Sebastian Andrade 2022
  */
 public class MatchWriter {
-    List<Integer> cellList;
-    List<Integer> xList;
-    List<Integer> yList;
+    private List<Integer> cellList;
+    private List<Integer> xList;
+    private List<Integer> yList;
+    private int matchNumber;
 
     //TODO: for decoder, initialize match list from the file
     public MatchWriter()  {
         cellList = new ArrayList<>();
         xList = new ArrayList<>();
         yList = new ArrayList<>();
+        matchNumber = 0;
     }
     public void clearData(){
-        cellList = new ArrayList<>();
-        xList = new ArrayList<>();
-        yList = new ArrayList<>();
+        cellList.clear();
+        xList.clear();
+        yList.clear();
+        matchNumber = 0;
     }
 
     /**
@@ -40,7 +44,12 @@ public class MatchWriter {
         cellList.add(cellNumber);
         xList.add(xCoord);
         yList.add(yCoord);
+        matchNumber += 1;
     }
+    public void printMatches(){
+        System.out.println(matchNumber);
+    }
+
     /**
      * @param matchFile the number of the individual cell of the grid
      *
@@ -49,21 +58,19 @@ public class MatchWriter {
     public void saveToFile(File matchFile){
 
         try {
+            DataOutputStream dos = new DataOutputStream(new FileOutputStream(matchFile, true));
 
-            FileOutputStream fos = new FileOutputStream(matchFile, true);
+            dos.writeInt(matchNumber);
 
-            fos.write(xList.size());
-
-            for(int i=0; i<xList.size(); i++){
+            for(int i=0; i<matchNumber; i++){
                 //Cell number on the destiny image
-                fos.write(cellList.get(i));
+                dos.writeInt(cellList.get(i));
                 //X coordinate on the base image
-                fos.write(xList.get(i));
+                dos.writeInt(xList.get(i));
                 //Y coordinate on the base image
-                fos.write(yList.get(i));
+                dos.writeInt(yList.get(i));
             }
-
-            fos.close();
+            dos.close();
 
         } catch (IOException e) {
             System.out.println("An error occurred.");

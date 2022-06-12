@@ -36,7 +36,7 @@ public class Args {
     private int GOP = 10;
 
     @Parameter(names = "--quality",help = true, description = "Quality factor for tessle coincidence")
-    private int quality = 1;
+    private int quality = 5;
 
 
     @Parameter(names = { "--batch", "-b" },help = true, description = "Batch mode")
