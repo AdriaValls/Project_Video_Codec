@@ -17,8 +17,6 @@ public class MatchWriter {
     List<Integer> xList;
     List<Integer> yList;
 
-
-
     //TODO: for decoder, initialize match list from the file
     public MatchWriter()  {
         cellList = new ArrayList<>();

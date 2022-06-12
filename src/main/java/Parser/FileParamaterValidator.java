@@ -20,6 +20,8 @@ public class FileParamaterValidator implements IParameterValidator {
     /**
      * @param name name of the variable
      * @param value directory or file path to be checked
+     *
+     * This method is used to make sure the given directories exist.
      */
     public void validate(String name, String value) throws ParameterException {
         Path pathToZipDir = Paths.get(value);

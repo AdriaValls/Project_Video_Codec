@@ -5,6 +5,8 @@ import com.beust.jcommander.Parameter;
 /**
  *
  * @author Adrià Valls, Sebastian Andrade 2022
+ *
+ * Here we define all the parameters the user can give and their Default value
  */
 public class Args {
 
