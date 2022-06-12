@@ -3,6 +3,7 @@ package Display;
 /**
  *
  * @author Adrià Valls, Sebastian Andrade 2022
+ * This class is from the previous submission, and is no longer in use.
  */
 public class FrameRateControl extends Thread{
     /*
@@ -10,6 +11,11 @@ public class FrameRateControl extends Thread{
      */
     private long milli_seconds;
 
+    /**
+     * @param millis, the fps given by the user in but in milliseconds
+     *
+     * Using the fps, we sleep the thread to slow down the execution.
+     */
     public FrameRateControl(long millis){
         this.milli_seconds = millis;
     }

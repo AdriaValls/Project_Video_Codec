@@ -8,6 +8,11 @@ import java.io.*;
  */
 public class MatchReader {
 
+    /**
+     * @param matchFile the file that contains the Matched Cell, and its coordinates
+     *
+     * this function reads MatchFile.txt to interpret the encoded information.
+     */
     public MatchReader(File matchFile){
         try{
             DataInputStream dis = new DataInputStream(new FileInputStream(matchFile));

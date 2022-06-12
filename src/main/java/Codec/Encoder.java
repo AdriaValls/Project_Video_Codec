@@ -41,7 +41,16 @@ public class Encoder {
     }
 
     /**
-     * @param inPath
+     * @param inPath the unzipped directory that contains all the images
+     * @param outPath the unzipped directory that will contain all the encoded images
+     * @param nTiles the number of tiles given by the user to define the size of the cell
+     * @param seekRange the maximum cell-search distance given by the user
+     * @param GOP an int that defines the number of images in between 2 frames
+     * @param quality an int 1-10 that defines the quality of the process
+     *
+     * In this method, we save the Base image in the encoded directory, and we iterate ove the rest of the files,
+     * We use the GOPcount to determine when to update the base image. Here we call the matchFinder method,
+     * where we divide each image into cells (grid).
      */
     public void encode(String inPath, String outPath, int nTiles, int seekRange, int GOP, int quality) {
 
@@ -129,6 +138,16 @@ public class Encoder {
 
     }
 
+    /**
+     * @param baseImg the image that depends on the COP count. The image is not modified
+     * @param destImg the image that corresponds to the iteration (next frame)
+     * @param nTiles the number of tiles given by the user to define the size of the cell
+     * @param seekRange the maximum cell-search distance given by the user
+     * @param quality an int 1-10 that defines the quality of the process
+     * @param matches the intance of the class MatchWriter that will allow us to se the information of the encoding process
+     *
+     * In this method, we create the grid of the image to get the coordinates for each cell, to do the cell matching.
+     */
     public BufferedImage matchFinder(BufferedImage baseImg, BufferedImage destImg, int nTiles, int seekRange, int quality, MatchWriter matches) {
         BufferedImage newDest = destImg;
         int cellNum = 0;
@@ -147,6 +166,20 @@ public class Encoder {
         return newDest;
     }
 
+    /**
+     * @param baseImg the image that depends on the COP count. The image is not modified
+     * @param destImg the image that corresponds to the iteration (next frame)
+     * @param Xcoord the x coordinate that corresponds to the cell
+     * @param Ycoord the y coordinate that corresponds to the cell
+     * @param nTiles the number of tiles given by the user to define the size of the cell
+     * @param seekRange the maximum cell-search distance given by the user
+     * @param quality an int 1-10 that defines the quality of the process
+     * @param matches the intance of the class MatchWriter that will allow us to se the information of the encoding process
+     * @param cellNum the cell number we are at, used for the MatchFile.txt.
+     *
+     * In this method, we create the actual cell, using the given coordinates and the getSubimage method. We call the method
+     * tessleComparator to get the euclidean distance, and determine whether it is a match or not.
+     */
     public BufferedImage cellMatching(BufferedImage baseImg, BufferedImage destImg, int Xcoord, int Ycoord, int nTiles, int seekRange, int quality, MatchWriter matches, int cellNum) {
         //System.out.println("Entered cell num "+cellNum);
         boolean matchFound = false;
@@ -212,11 +245,18 @@ public class Encoder {
         return newDest;
     }
 
+    /**
+     * @param baseTessle the cell of the base image
+     * @param destTessle the cell of the image we are comparing it to
+     * @param quality an int 1-10 that defines the quality of the process
+     *
+     * In this method, we get the euclidean distance, to see how similar the dest cell is to the cell in the base image,
+     * and determine if it is a match.
+     */
     public boolean tessleComparator(BufferedImage baseTessle, BufferedImage destTessle, int quality){
 
         boolean isMatch =true;
-        //get the average color
-        int r, g, b; //we will be adding the value to calculate the average
+        int r, g, b;
         float diff = 0;
         int count = 0;
 
@@ -243,6 +283,14 @@ public class Encoder {
         return isMatch;
     }
 
+    /**
+     * @param destImg the cell of the image
+     * @param xCoord the x coordinate of the cell
+     * @param yCoord the y coordinate of the cell
+     * @param nTiles the number of tiles given by the user to define the size of the cell
+     *
+     * In this method, we get the average color of the cell and apply this new color to the entire cell.
+     */
     public BufferedImage applyAverage(BufferedImage destImg, int xCoord, int yCoord, int nTiles){
 
         BufferedImage newDest = destImg;
@@ -278,8 +326,4 @@ public class Encoder {
         }
         return newDest;
     }
-
-
-
-
 }

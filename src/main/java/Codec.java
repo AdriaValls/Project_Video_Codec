@@ -1,5 +1,4 @@
 import Display.DisplayImg;
-import Display.ScheduledCall;
 import Display.ScheduledVideoCaller;
 import FileManagement.JPEG_Handler;
 import FileManagement.ZipHandler;
@@ -19,9 +18,15 @@ import java.text.DecimalFormat;
 import Codec.Encoder;
 import Codec.Decoder;
 
+/**
+ * @author Adrià Valls, Sebastian Andrade 2022
+ */
 public class Codec {
     //private static Args main_args;
 
+    /**
+     * @param args the command line arguments which are defined in the Parser package
+     */
     public static void main(String[] args) {
         System.out.print("TM codec"+"\n");
 
@@ -57,6 +62,12 @@ public class Codec {
         //callRunnable(argParser);
 
     }
+
+    /**
+     * @param arguments the command line arguments which are defined in the Parser package
+     * this function is just for testing. Here we make sure we can successfully unzip a file, and
+     * save its content as jpeg
+     */
     public static void test_Unzip_file(Args arguments){
 
         //read ZIP files
@@ -67,6 +78,12 @@ public class Codec {
         zipHandler.copy_file_as_jpeg(arguments.getOutputName(), arguments.getOutputName() +"JPEG_Copy");
 
     }
+
+    /**
+     * @param arguments the command line arguments which are defined in the Parser package
+     * this function is just for testing. Here we make sure we can successfully zip a file, with
+     * all of its content.
+     */
     public static void test_Zip_file(Args arguments){
 
         //write ZIP files
@@ -75,6 +92,8 @@ public class Codec {
         zipHandler.writeZip(arguments.getZipPath(), arguments.getOutputName());
 
     }
+
+  
     public static void decode(Args arguments){
 
         long startTime = System.currentTimeMillis();
@@ -90,6 +109,14 @@ public class Codec {
 
 
     }
+
+    /**
+     * @param arguments the command line arguments which are defined in the Parser package
+     * This is where the encoding process takes place. Here we call all the necessary functions to make this happen.
+     * Unzip the file, read the unzipped images and apply the encoding process by calling de "encode" method.
+     * Then we save the encoded images in a zip along with the serialized information document (for decoding).
+     * Finally, we print the total processing time, along with the file size gain after compressing.
+     */
     public static void encode(Args arguments){
 
         long startTime = System.currentTimeMillis(); //to keep track of the execution time
@@ -127,10 +154,16 @@ public class Codec {
         }
     }
 
+    /**
+     * @param arguments the command line arguments which are defined in the Parser package
+     * this function is used to start the Scheduler, which is responsible for playing the video.
+     * Here we read the first image, to start the display Panel in the DisplayImg Class. After the panel has
+     * been started, all we need to do is update the feed, which will be done by the scheduler according to the
+     * frame rate defined by the user.
+     */
     public static void callRunnable(Args arguments){ //start Display, and start Thread for Scheduler
 
-        System.out.println("fps: " + arguments.getFps());
-
+        //System.out.println("fps: " + arguments.getFps());
         BufferedImage img = null;
         File inputFile = null;
         if(arguments.isDecode()){
@@ -160,6 +193,11 @@ public class Codec {
         thread1.start();
     }
 
+    /**
+     * @param arguments the command line arguments which are defined in the Parser package
+     * this function is just for testing. Here we let the user know all of the information introduced is correct,
+     * and help ourselves see what parameters are being applied.
+     */
     public static void testParser(Args arguments){
 
         if(arguments.isEncode()){

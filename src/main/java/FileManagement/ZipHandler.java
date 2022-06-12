@@ -20,6 +20,12 @@ public class ZipHandler {
     }
 
     //read and unzip the file
+    /**
+     * @param inPath, the path of the zip directory to read
+     * @param outPath, the path where the directory will be unzipped to.
+     *
+     * This method is used to unzip a directory, creating a new directory that the user can access.
+     */
     public void readZip(String inPath, String outPath) {
 
         try{
@@ -62,8 +68,14 @@ public class ZipHandler {
 
     }
 
-    //function that creates a zip file, given an input file path to read from, and a given file path to create the zip
+    /**
+     * @param inPath, the path of an unzipped directory to read from.
+     * @param outPath, the path where the directory will be zipped to.
+     *
+     * This method is used to create a zipped directory, given a directory to read from.
+     */
     public void writeZip(String inPath, String outPath){
+        //function that creates a zip file, given an input file path to read from, and a given file path to create the zip
 
         try{
 
@@ -104,8 +116,16 @@ public class ZipHandler {
 
     }
 
-    //create a copy file with JPEG images
+    /**
+     * @param inPath, the path of an unzipped directory to read from.
+     * @param outPath, the path where a copy of the directory will be created.
+     *
+     * This method was used during testing, and its no longer necessary.
+     * This method is used to copy the content of a directory and paste it in another where the format will be jpeg,
+     * in case the original images where not in jpeg.
+     */
     public void copy_file_as_jpeg(String inPath, String outPath){
+        //create a copy file with JPEG images
 
         File outDirectoryFolder = new File(outPath);
 
@@ -125,7 +145,6 @@ public class ZipHandler {
                 jpeg_handler.writeImage(jpeg_handler.png_to_jpeg(jpeg_handler.readImage(temp.getAbsolutePath())),
                         outPath + File.separator + temp.getName().substring(0,temp.getName().length()-4) + ".jpeg");
 
-
             }else{
                 File dir = new File(temp.getName());
                 dir.mkdir();
@@ -133,7 +152,6 @@ public class ZipHandler {
             }
         }
         System.out.println("Creating Folder with JPEG: correct");
-
 
     }
 }
