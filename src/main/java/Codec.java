@@ -50,6 +50,7 @@ public class Codec {
         //Decode images of a file
         if(argParser.isDecode()){
             decode(argParser);
+            callRunnable(argParser);
             //test_Unzip_file(argParser); //for testing
         }
         //Encode images of a file
@@ -167,7 +168,7 @@ public class Codec {
         BufferedImage img = null;
         File inputFile = null;
         if(arguments.isDecode()){
-            inputFile = new File(arguments.getOutputName()); //use output path
+            inputFile = new File(arguments.getOutputName()+"_Decoded"); //use output path
 
         }else if(arguments.isEncode()){ //try to zip folder
 
@@ -219,7 +220,6 @@ public class Codec {
         BufferedImage img = null;
         int width, height;
 
-        //TODO- fis.close???
         //try to read an image
         try{
             file = new File(zipPath);

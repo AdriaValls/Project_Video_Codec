@@ -29,3 +29,5 @@ java -jar Tmcodec-1.0-SNAPSHOT.jar -i C:\Users\adriv\IdeaProjects\Project_Video_
 
 //decode
 java -jar Tmcodec-1.0-SNAPSHOT.jar -i C:\Users\adriv\IdeaProjects\Project_Video_Codec\src\main\resources\Out_images\Cubo_Encoded -o C:\Users\adriv\IdeaProjects\Project_Video_Codec\src\main\resources\Out_images\Cubo -d
+
+java -jar Tmcodec-1.0-SNAPSHOT.jar -i C:\Users\sebas\IdeaProjects\Project_Video_Codec_NEW\src\main\resources\Out_images\Cubo_Encoded -o C:\Users\sebas\IdeaProjects\Project_Video_Codec_NEW\src\main\resources\Out_images\Cubo -d
