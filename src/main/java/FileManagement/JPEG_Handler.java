@@ -16,7 +16,11 @@ public class JPEG_Handler {
     public JPEG_Handler(){
 
     }
-
+    /**
+     * @param str, path to read the image file
+     *
+     * This method is used to read a single image file, and returns a BufferedImage
+     */
     public BufferedImage readImage(String str ){
         BufferedImage img = null;
         try{
@@ -31,6 +35,12 @@ public class JPEG_Handler {
         return img;
     }
 
+    /**
+     * @param img, the image you want to save.
+     * @param outPath, the file path you want to save the image to
+     *
+     * This method is used to save an image in the path given, saving it as jpeg
+     */
     public void writeImage(BufferedImage img, String outPath){
         try{
             File file = new File(outPath);
@@ -42,6 +52,12 @@ public class JPEG_Handler {
         }
     }
 
+    /**
+     * @param imgIN, the image you want to change.
+     *
+     * This method is used to change an image's format to jpeg. This was used during testing. It is no longer
+     * necessary since in the encoder we already user the writeImage method.
+     */
     public BufferedImage png_to_jpeg(BufferedImage imgIN ){
         BufferedImage Jpeg_Image = null;
         Jpeg_Image = new BufferedImage( imgIN.getWidth(), imgIN.getHeight(), BufferedImage.TYPE_INT_RGB);

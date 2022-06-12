@@ -18,6 +18,14 @@ public class ScheduledPlayVideo extends TimerTask {
     DisplayImg displayImg;
 
     //constructor
+    /**
+     * @param displayImg the instance of the class, so we can call all of its method without having to pass an image.
+     * @param inPath the path of the directory that contains all the images to display.
+     *
+     * Since a method was already implemented in DisplayImg to update the Panel, we just call that method.
+     * We use a "count" variable to keep track of which image we want to display since count works as an
+     * index that corresponds to an image contained in the given directory.
+     */
     public ScheduledPlayVideo(DisplayImg displayImg, String inPath) {
         this.displayImg = displayImg;
         this.my_inPath = inPath;

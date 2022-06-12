@@ -17,8 +17,6 @@ public class MatchWriter {
     List<Integer> xList;
     List<Integer> yList;
 
-
-
     //TODO: for decoder, initialize match list from the file
     public MatchWriter()  {
         cellList = new ArrayList<>();
@@ -31,12 +29,23 @@ public class MatchWriter {
         yList = new ArrayList<>();
     }
 
+    /**
+     * @param cellNumber the number of the individual cell of the grid
+     * @param xCoord the x coordinate of the cell
+     * @param yCoord the y coordinate of the cell
+     *
+     * this function adds the match information to each corresponding global lists
+     */
     public void addMatch(int cellNumber, int xCoord, int yCoord){
         cellList.add(cellNumber);
         xList.add(xCoord);
         yList.add(yCoord);
     }
-
+    /**
+     * @param matchFile the number of the individual cell of the grid
+     *
+     * this function saves the information of each global list into the MatchFile.txt
+     */
     public void saveToFile(File matchFile){
 
         try {
