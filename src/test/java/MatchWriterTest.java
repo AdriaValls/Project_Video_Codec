@@ -1,13 +1,11 @@
 import FileManagement.MatchReader;
 import FileManagement.MatchWriter;
 import org.junit.Test;
-import java.io.File;  // Import the File class
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
+
+import java.io.*;
 
 public class MatchWriterTest {
-/*
+
     @Test
     public void fileWritingTest(){
         String filePath = "C:\\Users\\adriv\\IdeaProjects\\Project_Video_Codec\\MatchFile.txt";
@@ -18,7 +16,7 @@ public class MatchWriterTest {
             if(fileCreated){
                 FileOutputStream fos = new FileOutputStream(matchFile, true);
                 String outstr = "";
-                int numFrames = 1;
+                int numFrames = 2;
                 outstr += numFrames;
                 byte[] b= outstr.getBytes();
                 fos.write(b);
@@ -29,6 +27,9 @@ public class MatchWriterTest {
                 match.addMatch(1,1 , 2);
                 match.addMatch(4,5, 6);
                 match.saveToFile(matchFile);
+                match.clearData();
+                match.saveToFile(matchFile);
+
             }else{
                 System.out.print("file Created");
             }
@@ -37,30 +38,34 @@ public class MatchWriterTest {
             e.printStackTrace();
         }
     }
-*/
+
     @Test
     public void fileReadingTest(){
-        //String filePath = "C:\\Users\\adriv\\IdeaProjects\\Project_Video_Codec\\MatchFile.txt";
-        String filePath = "C:\\Users\\sebas\\IdeaProjects\\Project_Video_Codec_NEW\\src\\main\\resources\\Out_images\\Cubo_Encoded\\MatchFile.txt";
+        String filePath = "C:\\Users\\adriv\\IdeaProjects\\Project_Video_Codec\\MatchFile.txt";
+        //String filePath = "C:\\Users\\adriv\\IdeaProjects\\Project_Video_Codec\\src\\main\\resources\\Out_images\\Cubo_Encoded\\MatchFile.txt";
         File matchFile = new File(filePath);
-        boolean fileCreated;
-        MatchReader reader = new MatchReader(matchFile);
-        /*
+
+
         try{
-            fileCreated = matchFile.createNewFile();
+            boolean fileCreated = matchFile.createNewFile();
 
             if(fileCreated){
 
-                FileOutputStream fos = new FileOutputStream(matchFile, true);
-                int numFrames = 1;
-                fos.write(numFrames);
-                fos.close();
+                DataOutputStream dos = new DataOutputStream(new FileOutputStream(matchFile, true));
+                int numFrames = 3;
+                dos.writeInt(numFrames);
+                dos.close();
 
                 System.out.print("file Created");
                 MatchWriter match = new MatchWriter();
-                match.addMatch(1,1 , 2);
-                match.addMatch(4,5, 6);
                 match.saveToFile(matchFile);
+                match.clearData();
+                match.addMatch(257,458 , 642);
+                match.addMatch(420,5, 7895);
+                match.saveToFile(matchFile);
+                match.clearData();
+                match.saveToFile(matchFile);
+
             }else{
                 System.out.print("file Created");
             }
@@ -70,7 +75,6 @@ public class MatchWriterTest {
             e.printStackTrace();
         }
 
-         */
     }
 
 

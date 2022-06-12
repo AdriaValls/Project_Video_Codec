@@ -10,23 +10,27 @@ public class MatchReader {
 
     public MatchReader(File matchFile){
         try{
-            FileInputStream fis = new FileInputStream(matchFile);
-            int numFrames = fis.read();
-            System.out.print("Nuber of frame: " + numFrames +"\n");
+            DataInputStream dis = new DataInputStream(new FileInputStream(matchFile));
+
+            int numFrames = dis.readInt();
+            System.out.print("Nuber of frames: " + numFrames +"\n");
 
             for(int photoNum=0; photoNum<numFrames; photoNum++){
 
-                System.out.print("Frame: " + numFrames +"\n");
-                int nMatches = fis.read();
-                System.out.print("Matches in frame " + nMatches +"\n");
+                int nMatches = dis.readInt();
+                System.out.print("Matches in frame " + photoNum + ": " +nMatches+"\n");
 
                 for(int matchNum=0; matchNum<nMatches; matchNum++){
-                    System.out.print("Match number: " + matchNum +"\n");
-                    System.out.print("Cell number: "+fis.read() +"\n");
-                    System.out.print("X coord: "+fis.read() +"\n");
-                    System.out.print("Y coord: "+fis.read() +"\n");
+                    int cNumber = dis.readInt();
+                    int x = dis.readInt();
+                    int y = dis.readInt();
+
+                    System.out.print("Cell number: "+cNumber+"\n");
+                    System.out.print("X coord: "+x +"\n");
+                    System.out.print("Y coord: "+y +"\n");
                 }
             }
+            dis.close();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

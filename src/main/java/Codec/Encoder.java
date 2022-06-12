@@ -6,12 +6,17 @@ import FileManagement.MatchWriter;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.PublicKey;
 import java.util.HashMap;
 
+/**
+ *
+ * @author Adrià Valls, Sebastian Andrade 2022
+ */
 public class Encoder {
     private HashMap<Integer, Double> qualityValue;
     /** Encoder Class constructor  */
@@ -62,9 +67,9 @@ public class Encoder {
             fileCreated = matchFile.createNewFile();
             if (fileCreated) {
                 //System.out.print("Match file Created");
-                FileOutputStream fos = new FileOutputStream(matchFile, true);
-                fos.write(file_allPaths.length);
-                fos.close();
+                DataOutputStream dos = new DataOutputStream(new FileOutputStream(matchFile, true));
+                dos.writeInt(file_allPaths.length);
+                dos.close();
             }
         } catch (IOException e) {
             System.out.print("Cannot create MatchFile");
@@ -93,10 +98,9 @@ public class Encoder {
 
         while (destNum + 1 < file_allPaths.length) {
             destNum += 1;
-
             encode_progressBar = encode_progressBar.substring(0, destNum) + "=" + encode_progressBar.substring(destNum+1,encode_progressBar.length());
             System.out.print(encode_progressBar + "\r");
-
+            matches.clearData();
             if (GOPcount == GOP) {
                 GOPcount = 0;
                 baseNum = destNum;
@@ -104,9 +108,8 @@ public class Encoder {
                 baseImgFile = file_allPaths[baseNum];
                 baseImg = jpeg_handler.readImage(baseImgFile.getAbsolutePath());
                 //SAVE IMAGE TAL CUAL
-                jpeg_handler.writeImage(baseImg, outPath + File.separator + destNum + ".jpeg");
+                jpeg_handler.writeImage(baseImg, outPath + File.separator + baseImgFile.getName().substring(0, destImgFile.getName().length()-4) + ".jpeg");
                 //SAVE MATCHES
-                matches.clearData();
                 matches.saveToFile(matchFile);
 
 
@@ -118,11 +121,10 @@ public class Encoder {
                 //COMPARACION
                 //System.out.println("Image num "+destImg);
                 destImg = matchFinder(baseImg, destImg, nTiles, seekRange, quality, matches);
-                jpeg_handler.writeImage(destImg, outPath + File.separator + destNum + ".jpeg");
+                jpeg_handler.writeImage(destImg, outPath + File.separator + destImgFile.getName().substring(0, destImgFile.getName().length()-4) + ".jpeg");
                 matches.saveToFile(matchFile);
-                matches.clearData();
             }
-
+            matches.clearData();
         }
 
     }
@@ -206,8 +208,6 @@ public class Encoder {
         if(matchFound){
            applyAverage(newDest, Xcoord, Ycoord, nTiles);
            matches.addMatch(cellNum,x,y);
-           //System.out.println("Match found in cell "+cellNum);
-
         }
         return newDest;
     }
