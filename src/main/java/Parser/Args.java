@@ -40,7 +40,7 @@ public class Args {
 
 
     @Parameter(names = { "--batch", "-b" },help = true, description = "Batch mode")
-    private boolean batch;
+    private boolean batch = false;
 
     @Parameter(names = { "--filter", "-f" },help = true, description ="Filter for the images" )
     private String filter = "null";
@@ -65,7 +65,7 @@ public class Args {
 
     /** @return true if the batch flag is active, false otherwise*/
     public boolean isBatch(){
-        return decode;
+        return batch;
     }
 
     /** @return path of the base zip with images*/

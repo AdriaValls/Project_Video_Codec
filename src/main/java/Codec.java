@@ -50,7 +50,9 @@ public class Codec {
         //Decode images of a file
         if(argParser.isDecode()){
             decode(argParser);
-            callRunnable(argParser);
+            if(!(argParser.isBatch())){
+                callRunnable(argParser);
+            }
             //test_Unzip_file(argParser); //for testing
         }
         //Encode images of a file
