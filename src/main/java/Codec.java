@@ -101,8 +101,12 @@ public class Codec {
 
         long startTime = System.currentTimeMillis();
 
+        ZipHandler zipHandler = new ZipHandler();
+        //pass the input path and output path
+        zipHandler.readZip(arguments.getZipPath(), arguments.getOutputName());
+
         Decoder decoder = new Decoder();
-        decoder.decode(arguments.getZipPath(),arguments.getOutputName()+"_Decoded",
+        decoder.decode(arguments.getOutputName(),arguments.getOutputName()+"_Finished",
                 arguments.getnTiles(), arguments.getGOP());
 
         long encodingtime = System.currentTimeMillis() - startTime;
@@ -127,6 +131,9 @@ public class Codec {
         ZipHandler zipHandler = new ZipHandler();
         //pass the input path and output path
         zipHandler.readZip(arguments.getZipPath(), arguments.getOutputName());
+        //create a copy in JPEG so we can make a fair comparison of the file gain ratio
+        zipHandler.copy_file_as_jpeg(arguments.getOutputName(), arguments.getOutputName() +"JPEG_Copy");
+        zipHandler.writeZip(arguments.getOutputName() +"JPEG_Copy", arguments.getOutputName() +"JPEG_Finished.zip");
 
         //once the Zip has been unzipped, we will now apply the encoding process
         Encoder encoder = new Encoder();
@@ -142,7 +149,7 @@ public class Codec {
         System.out.println("Encoding time: " + (double) encodingtime /1000 + "s");
 
         //now lets print the gain in data size
-        Path old_path = Paths.get(arguments.getZipPath());
+        Path old_path = Paths.get(arguments.getOutputName() +"JPEG_Finished.zip");
         Path encoded_path = Paths.get(arguments.getOutputName()+"_Finished.zip");
         try {
 
@@ -151,6 +158,7 @@ public class Codec {
             long encoded = Files.size(encoded_path);
 
             System.out.println(String.format("File size improvement: "+ "%,d kilobytes", (old - encoded)/1024));
+            System.out.println("File-size gain ratio: " + (1 - ((float)(encoded/1024)/(float)(old/1024))));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -170,7 +178,7 @@ public class Codec {
         BufferedImage img = null;
         File inputFile = null;
         if(arguments.isDecode()){
-            inputFile = new File(arguments.getOutputName()+"_Decoded"); //use output path
+            inputFile = new File(arguments.getOutputName()+"_Finished"); //use output path
 
         }else if(arguments.isEncode()){ //try to zip folder
 

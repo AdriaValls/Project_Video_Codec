@@ -27,7 +27,10 @@ java -jar Tmcodec-1.0-SNAPSHOT.jar -i C:\Users\sebas\IdeaProjects\Project_Video_
 
 java -jar Tmcodec-1.0-SNAPSHOT.jar -i C:\Users\adriv\IdeaProjects\Project_Video_Codec\src\main\resources\images\Cubo.zip -o C:\Users\adriv\IdeaProjects\Project_Video_Codec\src\main\resources\Out_images\Cubo  -e
 
+java -jar Tmcodec-1.0-SNAPSHOT.jar -i C:\Users\sebas\IdeaProjects\Project_Video_Codec_NEW\src\main\resources\images\Cubo.zip -o C:\Users\sebas\IdeaProjects\Project_Video_Codec_NEW\src\main\resources\Out_images\Cubo -e --GOP 2 --quality 9
+
+
 //decode
 java -jar Tmcodec-1.0-SNAPSHOT.jar -i C:\Users\adriv\IdeaProjects\Project_Video_Codec\src\main\resources\Out_images\Cubo_Encoded -o C:\Users\adriv\IdeaProjects\Project_Video_Codec\src\main\resources\Out_images\Cubo -d
 
-java -jar Tmcodec-1.0-SNAPSHOT.jar -i C:\Users\sebas\IdeaProjects\Project_Video_Codec_NEW\src\main\resources\Out_images\Cubo_Encoded -o C:\Users\sebas\IdeaProjects\Project_Video_Codec_NEW\src\main\resources\Out_images\Cubo -d
+java -jar Tmcodec-1.0-SNAPSHOT.jar -i C:\Users\sebas\IdeaProjects\Project_Video_Codec_NEW\src\main\resources\Out_images\Cubo_Finished.zip -o C:\Users\sebas\IdeaProjects\Project_Video_Codec_NEW\src\main\resources\Out_images\Cubo_Decoded -d  --quality 9 --GOP 2
