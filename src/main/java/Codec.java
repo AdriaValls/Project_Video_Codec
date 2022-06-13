@@ -101,8 +101,12 @@ public class Codec {
 
         long startTime = System.currentTimeMillis();
 
+        ZipHandler zipHandler = new ZipHandler();
+        //pass the input path and output path
+        zipHandler.readZip(arguments.getZipPath(), arguments.getOutputName());
+
         Decoder decoder = new Decoder();
-        decoder.decode(arguments.getZipPath(),arguments.getOutputName()+"_Decoded",
+        decoder.decode(arguments.getOutputName(),arguments.getOutputName()+"_Finished",
                 arguments.getnTiles(), arguments.getGOP());
 
         long encodingtime = System.currentTimeMillis() - startTime;
@@ -170,7 +174,7 @@ public class Codec {
         BufferedImage img = null;
         File inputFile = null;
         if(arguments.isDecode()){
-            inputFile = new File(arguments.getOutputName()+"_Decoded"); //use output path
+            inputFile = new File(arguments.getOutputName()+"_Finished"); //use output path
 
         }else if(arguments.isEncode()){ //try to zip folder
 
