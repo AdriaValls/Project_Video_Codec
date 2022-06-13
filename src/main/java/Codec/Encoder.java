@@ -63,7 +63,7 @@ public class Encoder {
         File inputFile = new File(inPath);
         File[] file_allPaths = inputFile.listFiles();
 
-        System.out.println("Estimated time: " + (double) 0.0558 * file_allPaths.length + "s");
+        System.out.println("Estimated time: " + (double) 0.0658 * file_allPaths.length + "s");
 
         if (file_allPaths.length == 0) {
             throw new IllegalArgumentException("This file is empty " + inputFile.getAbsolutePath());
