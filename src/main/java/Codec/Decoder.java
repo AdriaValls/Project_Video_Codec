@@ -52,7 +52,7 @@ public class Decoder {
                     //IMG BASE = NEXT IMAGE
                     baseImgFile = file_allPaths[destNum];
                     baseImg = jpeg_handler.readImage(baseImgFile.getAbsolutePath());
-                    System.out.println(file_allPaths[destNum]);
+                    //System.out.println(file_allPaths[destNum]);
                     nMatches = dis.readInt();
                     jpeg_handler.writeImage(baseImg, outPath + File.separator + destNum + ".jpeg");
 
