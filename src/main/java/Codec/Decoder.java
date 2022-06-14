@@ -60,6 +60,7 @@ public class Decoder {
 
                 else {
                     GOPcount += 1;
+                    //baseImg = jpeg_handler.readImage(file_allPaths[destNum-1].getAbsolutePath()); //FIX after presentation
                     //IMG Dest = NEXT IMAGE
                     destImgFile = file_allPaths[destNum];
                     destImg = jpeg_handler.readImage(destImgFile.getAbsolutePath());
@@ -73,7 +74,7 @@ public class Decoder {
                         destImg = patchMatches(baseImg, destImg, cellNum, xCoord, yCoord, nTiles);
                     }
                     jpeg_handler.writeImage(destImg, outPath + File.separator + destNum + ".jpeg");
-
+                    baseImg = destImg;
                 }
                 destNum += 1;
             }

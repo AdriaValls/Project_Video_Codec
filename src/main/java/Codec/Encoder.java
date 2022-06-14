@@ -125,6 +125,7 @@ public class Encoder {
             } else {
                 GOPcount += 1;
                 //IMG Dest = NEXT IMAGE
+                baseImg = jpeg_handler.readImage(file_allPaths[destNum-1].getAbsolutePath()); //FIX after presentation
                 destImgFile = file_allPaths[destNum];
                 destImg = jpeg_handler.readImage(destImgFile.getAbsolutePath());
                 //COMPARACION
